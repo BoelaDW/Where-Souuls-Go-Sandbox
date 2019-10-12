@@ -1,0 +1,71 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://Player/wisp1 (1).png" type="Texture" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 6.0
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0.210526, 1 )
+colors = PoolColorArray( 0, 0.695312, 1, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 1
+emission_sphere_radius = 8.0
+flag_disable_z = true
+spread = 62.14
+gravity = Vector3( 0, -10, 0 )
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+color_ramp = SubResource( 3 )
+
+[node name="Player" type="KinematicBody2D"]
+collision_layer = 3
+script = ExtResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 2 )
+shape = SubResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+local_coords = false
+process_material = SubResource( 4 )
+
+[node name="Body" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+vframes = 4
+hframes = 4
+
+[node name="Eyes" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+vframes = 4
+hframes = 4
+frame = 10
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.25
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+z_as_relative = false
+current = true
+smoothing_enabled = true
+
+[node name="FirePosition" type="Position2D" parent="."]
+position = Vector2( -8, 0 )
+
+[node name="CanFireTimer" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="ShakeTimer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+[connection signal="timeout" from="CanFireTimer" to="." method="_on_CanFireTimer_timeout"]
+[connection signal="timeout" from="ShakeTimer" to="." method="_on_ShakeTimer_timeout"]
