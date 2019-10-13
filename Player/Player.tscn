@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/wisp1 (1).png" type="Texture" id=2]
 [ext_resource path="res://UI/GUI.tscn" type="PackedScene" id=3]
+[ext_resource path="res://UI/DummyBlock.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 6.0
@@ -80,9 +81,13 @@ wait_time = 0.5
 one_shot = true
 
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 17
+collision_mask = 17
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 5 )
+
+[node name="DummyBlock" parent="." instance=ExtResource( 4 )]
 [connection signal="timeout" from="CanFireTimer" to="." method="_on_CanFireTimer_timeout"]
 [connection signal="timeout" from="ShakeTimer" to="." method="_on_ShakeTimer_timeout"]
 [connection signal="timeout" from="PowerRegenTimer" to="." method="_on_PowerRegenTimer_timeout"]

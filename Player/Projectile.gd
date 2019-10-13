@@ -2,7 +2,9 @@ extends KinematicBody2D
 
 var SPEED = 500
 
-var dir = 1
+var dir = -1
+var Ydir = 0
+
 
 onready var HIT_EFFECT_SCENE = preload("res://Effects/ProjectileHitEffect.tscn")
 
@@ -13,11 +15,30 @@ var velocity = Vector2()
 func _ready():
 	$DestroyTimer.start()
 	$AnimationPlayer.play("Active")
+	
+	if Ydir == 0:
+		
+		if dir > 0:
+			$Sprite.flip_h = false
+		else:
+			$Sprite.flip_h = true
+	else:
+		if Ydir == 1:
+			$Sprite.rotate(rad2deg(90))
+		elif Ydir == -1:
+			$Sprite.rotate(rad2deg(-90))
+		
+		
+		
 
 func _physics_process(delta):
 	
-	velocity.x = SPEED * dir
 	
+	if Ydir == 0:
+		
+		velocity.x = SPEED * dir
+	else:
+		velocity.y = SPEED * Ydir
 	
 	velocity = move_and_slide(velocity)
 	

@@ -11,6 +11,16 @@ var playerHP = 100
 var playerPower = 100
 
 
+
+
+
+var selectedToolbarTool = 0
+
+
+
+
+var blockID = 0
+onready var blockDB = []
 #----------------------------------------------
 
 
