@@ -22,7 +22,8 @@ var canFire = true
 onready var PROJECTILE = preload("res://Player/Projectile.tscn")
 
 func _ready():
-	pass
+	$PowerRegenTimer.start()
+	add_to_group("Player")
 
 
 func getInput():
@@ -41,7 +42,7 @@ func getInput():
 		
 		velocity.y = JUMP_FORCE
 	
-	if Input.is_action_pressed("ui_accept") and canFire:
+	if Input.is_action_pressed("ui_accept") and canFire and GLOBAL.playerPower > 0:
 		var projectile = PROJECTILE.instance()
 		projectile.dir = dir
 		projectile.velocity.x += velocity.x
@@ -49,7 +50,7 @@ func getInput():
 		projectile.global_position = $FirePosition.global_position
 		canFire = false
 		$CanFireTimer.start()
-		
+		GLOBAL.playerPower -= 5
 		shakeCamera()
 	
 	
@@ -57,6 +58,21 @@ func getInput():
 func _physics_process(delta):
 	
 	getInput()
+	
+	
+	
+	
+	if $Area2D.get_overlapping_bodies() != []:
+		for body in $Area2D.get_overlapping_bodies():
+			if body is Enemy:
+				body.attackPlayer()
+			
+		
+		
+	
+	
+	
+	
 	
 	
 	
@@ -108,3 +124,9 @@ func _on_ShakeTimer_timeout():
 	else:
 		shakeProgress = 0
 		$Camera2D.offset = Vector2()
+
+
+func _on_PowerRegenTimer_timeout():
+	if GLOBAL.playerPower < 100:
+		GLOBAL.playerPower += 5
+	$PowerRegenTimer.start()

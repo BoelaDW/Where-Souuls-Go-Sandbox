@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/wisp1 (1).png" type="Texture" id=2]
+[ext_resource path="res://UI/GUI.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 6.0
@@ -22,6 +23,8 @@ gravity = Vector3( 0, -10, 0 )
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 color_ramp = SubResource( 3 )
+
+[sub_resource type="RectangleShape2D" id=5]
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 3
@@ -57,6 +60,10 @@ z_as_relative = false
 current = true
 smoothing_enabled = true
 
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera2D"]
+
+[node name="GUI" parent="Camera2D/CanvasLayer" instance=ExtResource( 3 )]
+
 [node name="FirePosition" type="Position2D" parent="."]
 position = Vector2( -8, 0 )
 
@@ -67,5 +74,15 @@ one_shot = true
 [node name="ShakeTimer" type="Timer" parent="."]
 wait_time = 0.05
 one_shot = true
+
+[node name="PowerRegenTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 5 )
 [connection signal="timeout" from="CanFireTimer" to="." method="_on_CanFireTimer_timeout"]
 [connection signal="timeout" from="ShakeTimer" to="." method="_on_ShakeTimer_timeout"]
+[connection signal="timeout" from="PowerRegenTimer" to="." method="_on_PowerRegenTimer_timeout"]

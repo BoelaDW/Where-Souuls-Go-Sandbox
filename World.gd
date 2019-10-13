@@ -37,9 +37,7 @@ var amountOfBuildings = 0
 
 
 func _ready():
-	GLOBAL.enemiesInLevel = 0
-	GLOBAL.enemiesKilled = 0
-	GLOBAL.allBlocksExplode = false
+	
 	
 	
 	
@@ -181,12 +179,11 @@ func generateStructure(baseX,baseY):
 				pass
 			#all the normal blocks
 			else:
-				
 				var block = BLOCK_3_SCENE.instance()
 				buildingBase.add_child(block)
 				block.global_position.x = buildingBlockX
 				block.global_position.y = buildingBlockY
-			
+				
 			#adds one door to each building
 			if column == houseWidth/3 and hasDoor == false:
 				var door = BUILDING_DOOR.instance()

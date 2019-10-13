@@ -7,19 +7,14 @@ var worldGenSize = 100
 
 var playerPos = Vector2()
 
-var enemiesInLevel = 0
-var enemiesKilled = 0
+var playerHP = 100
+var playerPower = 100
 
-var allBlocksExplode = false
 
 #----------------------------------------------
 
 
-func _physics_process(delta):
-	if enemiesInLevel <= 0 and enemiesKilled > 2:
-		allBlocksExplode = true
-	
-	
+
 
 
 
