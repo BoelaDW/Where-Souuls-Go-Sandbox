@@ -37,9 +37,7 @@ var amountOfBuildings = 0
 
 
 func _ready():
-	GLOBAL.enemiesInLevel = 0
-	GLOBAL.enemiesKilled = 0
-	GLOBAL.allBlocksExplode = false
+	
 	
 	
 	
@@ -169,7 +167,7 @@ func generateStructure(baseX,baseY):
 				var block = BLOCK_3_CORNER_SCENE.instance()
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
-				
+				block.addToDB()
 				pass
 			#Right of house
 			elif column == houseWidth - 1:
@@ -177,16 +175,16 @@ func generateStructure(baseX,baseY):
 				block.flippedH = true
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
-				
+				block.addToDB()
 				pass
 			#all the normal blocks
 			else:
-				
 				var block = BLOCK_3_SCENE.instance()
 				buildingBase.add_child(block)
 				block.global_position.x = buildingBlockX
 				block.global_position.y = buildingBlockY
-			
+				block.addToDB()
+				
 			#adds one door to each building
 			if column == houseWidth/3 and hasDoor == false:
 				var door = BUILDING_DOOR.instance()
@@ -238,5 +236,6 @@ func buildFloor():
 		block1.global_position.x = blockX
 		block1.global_position.y = blockY
 		blockX += block1.blockWidth
+		block1.addToDB()
 	
 	
