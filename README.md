@@ -6,3 +6,5 @@ Updates! :
    - Toolbar has been added
    - Skeletons now collide with blue brick blocks
    - Some performance optimisations have been done
+   
+   - Toolbar options are selected with number hotkeys (1, 2, 3, etc)
