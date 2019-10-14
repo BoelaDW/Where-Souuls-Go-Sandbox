@@ -4,10 +4,10 @@ extends Node2D
 var worldSeed = GLOBAL.worldGenSeed
 
 #Building block scenes
-onready var BLOCK_1_SCENE = 		preload("res://Blocks/Block1.tscn")
-onready var BLOCK_2_SCENE = 		preload("res://Blocks/Block2.tscn")
+onready var BLOCK_1_SCENE = 		preload("res://Blocks/Block1.tscn") #Grey blocks
+onready var BLOCK_2_SCENE = 		preload("res://Blocks/Block2.tscn") #Blue bricks
 onready var BLOCK_2_CORNER_SCENE = 	preload("res://Blocks/Block2Corner.tscn")
-onready var BLOCK_3_SCENE = 		preload("res://Blocks/Block3.tscn")
+onready var BLOCK_3_SCENE = 		preload("res://Blocks/Block3.tscn") #Wooden blocks
 onready var BLOCK_3_CORNER_SCENE = 	preload("res://Blocks/Block3Corner.tscn")
 
 #Building related scenes
@@ -110,13 +110,13 @@ func addBuildings():
 	for column in range(worldWidth):
 		var buildRandi = randi()%200
 		blockX += 16
-		if blockX > (lastBuildingPos.x + leftAndRightBufferSize) and blockX < (worldWidth * 16) - leftAndRightBufferSize:
+		if blockX > (lastBuildingPos.x + leftAndRightBufferSize * 1.2) and blockX < (worldWidth * 16) - leftAndRightBufferSize * 1.2:
 			if buildRandi < 10:
 				lastBuildingPos = Vector2(blockX,blockY)
 				generateStructure(blockX,blockY)
 				amountOfBuildings += 1
 			
-		elif blockX > (worldWidth * 16) - (leftAndRightBufferSize + 16):
+		elif blockX > (worldWidth * 16) - (leftAndRightBufferSize + 16) and blockX < (worldWidth*16) - leftAndRightBufferSize / 2:
 			if spawnFortress and not fortressSpawned:
 				fortressSpawned = true
 				lastBuildingPos = Vector2(blockX,blockY)
@@ -149,7 +149,7 @@ func spawnFriendlies():
 	var ampuntOfFriendlies = 0
 	
 	for column in range(worldWidth):
-		var buildRandi = randi()%int(worldWidth/20)
+		var buildRandi = randi()%int((worldWidth + 20)/20)
 		blockX += 16
 		if ampuntOfFriendlies < (worldWidth / 50) and buildRandi < 10 and blockX < (worldWidth * 16) - 64:
 			var friendly = FRIENDLY_SCENE.instance()
@@ -196,8 +196,12 @@ func generateFortress(baseX, baseY):
 	#Random Size
 	var houseWidth = rand_range(10,25)
 	houseWidth = int(houseWidth)
-	var houseHeight = rand_range(10, 35)
-	houseHeight = int(houseHeight)
+	var houseHeight = rand_range(3,8) #Did a little math to make nice size floors
+	houseHeight = (int(houseHeight) * 4) - 1
+	
+	var numberOfFLoors = int(houseHeight / 4)
+	var lastFloorY = baseY
+	var floorsPlaced = 0
 	
 	#Generate base of building.
 	for row in range(houseHeight):
@@ -206,13 +210,16 @@ func generateFortress(baseX, baseY):
 		for column in range(houseWidth):
 			#Left of house
 			if column == 0:
-				var block = BLOCK_3_CORNER_SCENE.instance()
+				var block = BLOCK_2_SCENE.instance()
+				block.blockHp = 3
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
+				
 			#Right of house
 			elif column == houseWidth - 1:
-				var block = BLOCK_3_CORNER_SCENE.instance()
+				var block = BLOCK_2_SCENE.instance()
+				block.blockHp = 3
 				block.flippedH = true
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
@@ -221,13 +228,15 @@ func generateFortress(baseX, baseY):
 				
 			#all the normal blocks
 			else:
-				
-				if buildingBlockY == baseY - (16 * 4):
+				#Floors
+				if buildingBlockY == lastFloorY - (16 * 4) and floorsPlaced < numberOfFLoors and not column == (houseWidth / 2) and not column == (houseWidth / 2 - 1):
 					var block = BLOCK_3_SCENE.instance()
 					buildingBase.add_child(block)
 					block.global_position = Vector2(buildingBlockX,buildingBlockY)
+					if column == houseWidth - 2:
+						lastFloorY = buildingBlockY
 					block.addToDB()
-					
+					numberOfFLoors += 1
 					
 				
 			
@@ -237,11 +246,16 @@ func generateFortress(baseX, baseY):
 			buildingBlockX += 16
 		buildingBlockX = bbBaseX
 		buildingBlockY -= 16 #Block height
+		
+	
+	
 	#Generate roof
-	for column in range(houseWidth):
+	buildingBlockX = bbBaseX - (16* 2)
+	for column in range(houseWidth + 4):
 		#Left corner
 		if column == 0:
-			var block = BLOCK_2_CORNER_SCENE.instance()
+			var block = BLOCK_2_SCENE.instance()
+			block.blockHp = 3
 			block.flippedH = true
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
@@ -249,22 +263,51 @@ func generateFortress(baseX, baseY):
 			
 		#Right corner
 		elif column == houseWidth - 1:
-			var block = BLOCK_2_CORNER_SCENE.instance()
+			var block = BLOCK_2_SCENE.instance()
+			block.blockHp = 3
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
 			block.addToDB()
 		#All other blocks
 		else:
+			if column != 6 and column != 7:
+				var block = BLOCK_2_SCENE.instance()
+				block.blockHp = 3
+				buildingBase.add_child(block)
+				block.global_position = Vector2(buildingBlockX,buildingBlockY)
+				block.addToDB()
+			
+			
+		buildingBlockX += 16
+	buildingBlockX = bbBaseX - (16 * 3)
+	buildingBlockY -= 16
+	
+	
+	#Generate Castle merlons
+	for column in range(houseWidth + 4):
+		#Left corner
+		if column == 1:
 			var block = BLOCK_2_SCENE.instance()
+			block.blockHp = 3
+			block.flippedH = true
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
 			block.addToDB()
 			
+		#Right corner
+		elif column == houseWidth + 3:
+			var block = BLOCK_2_SCENE.instance()
+			block.blockHp = 3
+			buildingBase.add_child(block)
+			block.global_position = Vector2(buildingBlockX + 16,buildingBlockY)
+			block.addToDB()
+		#All other blocks
+		else:
+			pass
+			
 			
 		buildingBlockX += 16
 		
-	
-	
 	
 	
 	

@@ -10,7 +10,11 @@ Changes made
 		- Klara mode is also new
 		- GUI got a few changes
 		- Friendly now has an Angry mode
-
+	
+	Tue 15 Oct:
+		- Changed world gen algorithm to include Fortress
+		- Blocks now have hp variable
+		
 
 Changes to make
 
