@@ -22,7 +22,13 @@ func _ready():
 func destroy():
 	if canBreak:
 		
+		
+		print(GLOBAL.blockDB.has(blockId))
 		GLOBAL.blockDB.erase(blockId)
+		print(blockId)
+		while GLOBAL.blockDB.has(blockId):
+			GLOBAL.blockDB.erase(blockId)
+			print(GLOBAL.blockDB.has(blockId))
 		queue_free()
 		
 	

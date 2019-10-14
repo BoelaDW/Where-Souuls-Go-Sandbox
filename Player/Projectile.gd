@@ -24,9 +24,9 @@ func _ready():
 			$Sprite.flip_h = true
 	else:
 		if Ydir == 1:
-			$Sprite.rotate(rad2deg(90))
-		elif Ydir == -1:
 			$Sprite.rotate(rad2deg(-90))
+		elif Ydir == -1:
+			$Sprite.rotate(rad2deg(90))
 		
 		
 		
@@ -45,7 +45,7 @@ func _physics_process(delta):
 
 
 func _on_Area2D_body_entered(body):
-	if body is Block or body is Enemy:
+	if body is Block or body is Enemy or body is BuildingDoor or body is Friendly:
 		body.destroy()
 		var hitEffect = HIT_EFFECT_SCENE.instance()
 		get_parent().add_child(hitEffect)

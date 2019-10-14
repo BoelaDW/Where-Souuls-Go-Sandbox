@@ -4,22 +4,23 @@ extends Node2D
 var worldSeed = GLOBAL.worldGenSeed
 
 #Building block scenes
-onready var BLOCK_1_SCENE = preload("res://Blocks/Block1.tscn")
-onready var BLOCK_2_SCENE = preload("res://Blocks/Block2.tscn")
-onready var BLOCK_2_CORNER_SCENE = preload("res://Blocks/Block2Corner.tscn")
-onready var BLOCK_3_SCENE = preload("res://Blocks/Block3.tscn")
-onready var BLOCK_3_CORNER_SCENE = preload("res://Blocks/Block3Corner.tscn")
+onready var BLOCK_1_SCENE = 		preload("res://Blocks/Block1.tscn")
+onready var BLOCK_2_SCENE = 		preload("res://Blocks/Block2.tscn")
+onready var BLOCK_2_CORNER_SCENE = 	preload("res://Blocks/Block2Corner.tscn")
+onready var BLOCK_3_SCENE = 		preload("res://Blocks/Block3.tscn")
+onready var BLOCK_3_CORNER_SCENE = 	preload("res://Blocks/Block3Corner.tscn")
 
 #Building related scenes
-onready var BUILDING_BASE_SCENE = preload("res://Buildings/BuildingBase.tscn")
-onready var BUILDING_DOOR = preload("res://Buildings/BuildingDoor.tscn")
+onready var BUILDING_BASE_SCENE = 	preload("res://Buildings/BuildingBase.tscn")
+onready var BUILDING_DOOR = 		preload("res://Buildings/BuildingDoor.tscn")
 
 #Player scene, if that wasn't obvious
-onready var PLAYER_SCENE = preload("res://Player/Player.tscn")
+onready var PLAYER_SCENE = 			preload("res://Player/Player.tscn")
 
 #Just something to add a little more souul to the game ;D
-onready var DECORATION_SCENE = preload("res://Objects/Decoration.tscn")
-onready var ENEMY_1_SCENE = preload("res://NPCs/BasicEnemy.tscn")
+onready var DECORATION_SCENE = 		preload("res://Objects/Decoration.tscn")
+onready var ENEMY_1_SCENE = 		preload("res://NPCs/BasicEnemy.tscn")
+onready var FRIENDLY_SCENE = 		preload("res://NPCs/Friendly/Friendly.tscn")
 
 
 #This valuse will be set via the world gen menu
@@ -37,10 +38,7 @@ var amountOfBuildings = 0
 
 
 func _ready():
-	
-	
-	
-	
+	#Seed for world generation
 	seed(worldSeed)
 	blockY = stepify(get_viewport_rect().size.y - 16,16)
 	
@@ -66,10 +64,11 @@ func buildWorld():
 	addBuildings()
 	addDecorations()
 	spawnPlayer()
-	spawnEnemies()
+	spawnFriendlies()
+	#Klara mode turns all skeletons and stuff off
+	if not GLOBAL.klaraModeEnabled:
+		spawnEnemies()
 	
-	#This is just interesting to see how many buildings were added
-	print(amountOfBuildings)
 
 #Spawn player in the exact middle of the generated world
 func spawnPlayer():
@@ -81,6 +80,29 @@ func spawnPlayer():
 	
 	
 	
+
+
+
+
+func spawnFriendlies():
+	
+	
+	blockX = 0
+	var ampuntOfFriendlies = 0
+	
+	for column in range(worldWidth):
+		var buildRandi = randi()%int(worldWidth/20)
+		blockX += 16
+		if ampuntOfFriendlies < (worldWidth / 50) and buildRandi < 10 and blockX < (worldWidth * 16) - 64:
+			var friendly = FRIENDLY_SCENE.instance()
+			add_child(friendly)
+			friendly.global_position = Vector2(blockX,blockY - 16)
+			ampuntOfFriendlies += 1
+	
+	
+	
+	
+
 
 
 func spawnEnemies():
@@ -204,19 +226,19 @@ func generateStructure(baseX,baseY):
 			block.flippedH = true
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
-			
+			block.addToDB()
 			
 			
 		elif column == houseWidth - 1:
 			var block = BLOCK_2_CORNER_SCENE.instance()
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
-			
+			block.addToDB()
 		else:
 			var block = BLOCK_2_SCENE.instance()
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
-			
+			block.addToDB()
 			
 			
 		buildingBlockX += 16

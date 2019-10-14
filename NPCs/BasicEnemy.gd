@@ -35,6 +35,12 @@ func _physics_process(delta):
 	
 	
 	if isOnScreen:
+		
+		if GLOBAL.checkCanMoveLeft(global_position.x) and GLOBAL.checkCanMoveRight(global_position.x):
+			pass
+		else:
+			dir *= -1
+		
 		if shouldFollowPlayer > 80:
 			
 			if GLOBAL.playerPos.x > self.global_position.x:
@@ -56,8 +62,8 @@ func _physics_process(delta):
 			$RayCast2D.position.x = -8
 			$RayCast2D2.cast_to.x = -16
 		
-		
-		velocity.x = WALK_SPEED * dir
+		if (global_position.x < GLOBAL.worldGenSize * 16) and (global_position.x > 0):
+			velocity.x = WALK_SPEED * dir
 		
 		velocity.y += GRAVITY
 		

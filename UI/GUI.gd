@@ -107,3 +107,10 @@ func updateToolbar():
 	
 	
 	
+
+func _on_ToolBarItem1_mouse_entered():
+	GLOBAL.selectedToolbarTool = 0
+
+
+func _on_ToolBarItem2_mouse_entered():
+	GLOBAL.selectedToolbarTool = 1

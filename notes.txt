@@ -1,0 +1,20 @@
+Changes made
+
+	Mon 14 Oct:
+		- Doors can now be destroyed
+		- Firing projectiles now also have recoil
+		- Changed block placing distance on X axis
+		
+	Mon 14 Oct 0.1:
+		- "Friendly" mob has been added, and they can jump!
+		- Klara mode is also new
+		- GUI got a few changes
+		- Friendly now has an Angry mode
+
+
+Changes to make
+
+	Mon 14 Oct:
+		- Player shouldn't collide with Friendly
+		- Projectile shoud collide with Friendly
+		- Add angry noises to Friendly

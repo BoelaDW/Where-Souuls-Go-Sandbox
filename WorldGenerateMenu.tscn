@@ -58,4 +58,11 @@ rect_min_size = Vector2( 120, 50 )
 size_flags_horizontal = 4
 size_flags_vertical = 2
 text = "Generate World"
+
+[node name="KModeCheckButton" type="CheckButton" parent="HSplitContainer"]
+margin_top = 220.0
+margin_right = 440.0
+margin_bottom = 260.0
+pressed = true
+text = "Klara mode"
 [connection signal="pressed" from="HSplitContainer/Button" to="." method="_on_Button_pressed"]
