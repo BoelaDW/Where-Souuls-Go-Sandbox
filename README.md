@@ -10,4 +10,8 @@
    - Klara mode is also new
    - GUI got a few changes
    - Friendly can get angry
+   
+   
+Tue 15 Oct:
    - There will now be fortresses spawned if world size allows it
+   - Blocks now have an HP system 
