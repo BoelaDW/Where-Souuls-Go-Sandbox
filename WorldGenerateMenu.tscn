@@ -29,7 +29,7 @@ margin_right = 440.0
 margin_bottom = 42.0
 min_value = 10.0
 max_value = 999999.0
-value = 100.0
+value = 200.0
 align = 1
 
 [node name="Label2" type="Label" parent="HSplitContainer"]

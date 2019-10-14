@@ -31,7 +31,9 @@ var worldWidth = GLOBAL.worldGenSize
 var blockX = 0
 var blockY = 0
 
-
+#Is there gonna be a fortress?
+var spawnFortress = false
+var fortressSpawned = false
 
 #For Testing purposes
 var amountOfBuildings = 0
@@ -40,11 +42,18 @@ var amountOfBuildings = 0
 func _ready():
 	#Seed for world generation
 	seed(worldSeed)
+	
+	#This is to determine if a fortress should be spawned
+	var spawnFortressProbability = rand_range(-10,10)
+	if spawnFortressProbability > -10:
+		spawnFortress = true
+	else:
+		spawnFortress = false
+	
 	blockY = stepify(get_viewport_rect().size.y - 16,16)
 	
 	#This generates the world we will play in
 	buildWorld()
-
 
 
 func _input(event):
@@ -52,9 +61,7 @@ func _input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		GLOBAL.goto_scene("res://WorldGenerateMenu.tscn")
 		
-	
-	
-	
+
 
 #Main Function for generating the world
 func buildWorld():
@@ -68,7 +75,62 @@ func buildWorld():
 	#Klara mode turns all skeletons and stuff off
 	if not GLOBAL.klaraModeEnabled:
 		spawnEnemies()
+
+
+
+
+#Just generates the basic floor of the world
+func buildFloor():
 	
+	
+	
+	for column in range(worldWidth):
+		
+		var block1 = BLOCK_1_SCENE.instance()
+		block1.canBreak = false
+		add_child(block1)
+		block1.global_position.x = blockX
+		block1.global_position.y = blockY
+		blockX += block1.blockWidth
+		block1.addToDB()
+	
+
+
+
+
+#This runs through the entire width of the level and has buildings generated
+#The generating is done through another function, this just tells it where
+func addBuildings():
+	blockX = 0
+	var lastBuildingPos = Vector2()
+	
+	#This is so nothing gets placed on the outside edge of the world
+	var leftAndRightBufferSize = 16 * 32
+	
+	for column in range(worldWidth):
+		var buildRandi = randi()%200
+		blockX += 16
+		if blockX > (lastBuildingPos.x + leftAndRightBufferSize) and blockX < (worldWidth * 16) - leftAndRightBufferSize:
+			if buildRandi < 10:
+				lastBuildingPos = Vector2(blockX,blockY)
+				generateStructure(blockX,blockY)
+				amountOfBuildings += 1
+			
+		elif blockX > (worldWidth * 16) - (leftAndRightBufferSize + 16):
+			if spawnFortress and not fortressSpawned:
+				fortressSpawned = true
+				lastBuildingPos = Vector2(blockX,blockY)
+				generateFortress(blockX,blockY)
+				amountOfBuildings += 1
+				
+				
+			
+			
+
+
+
+
+
 
 #Spawn player in the exact middle of the generated world
 func spawnPlayer():
@@ -78,10 +140,6 @@ func spawnPlayer():
 	add_child(player)
 	player.global_position = Vector2(spawnPosX,0)
 	
-	
-	
-
-
 
 
 func spawnFriendlies():
@@ -99,17 +157,11 @@ func spawnFriendlies():
 			friendly.global_position = Vector2(blockX,blockY - 16)
 			ampuntOfFriendlies += 1
 	
-	
-	
-	
-
 
 
 func spawnEnemies():
 	
-	
 	blockX = 0
-	
 	
 	for column in range(worldWidth):
 		var buildRandi = randi()%int(worldWidth)
@@ -120,44 +172,109 @@ func spawnEnemies():
 			enemy.global_position = Vector2(blockX,blockY - 16)
 	
 	
-	
-	
 
 
 
 
-#This runs through the entire width of the level and has buildings generated
-#The generating is done through another function, this just tells it where
-func addBuildings():
-	blockX = 0
-	var lastBuildingPos = Vector2()
-	
-	
-	for column in range(worldWidth):
-		var buildRandi = randi()%200
-		blockX += 16
-		if buildRandi < 10 and blockX > (lastBuildingPos.x + 256) and blockX < (worldWidth * 16) - 256:
-			lastBuildingPos = Vector2(blockX,blockY)
-			generateStructure(blockX,blockY)
-			amountOfBuildings += 1
 
-func addDecorations():
-	
-	blockX = 0
-	var lastDecorationPos = Vector2()
+func generateFortress(baseX, baseY):
 	
 	
-	for column in range(worldWidth):
-		var buildRandi = randi()%int(worldWidth)
-		blockX += 16
-		if buildRandi < 10 and blockX > (lastDecorationPos.x + 16) and blockX < (worldWidth * 16) - 64:
-			lastDecorationPos = Vector2(blockX,blockY)
-			var decoration = DECORATION_SCENE.instance()
-			add_child(decoration)
-			decoration.global_position = Vector2(blockX,blockY - 8)
+	#Start from base
+	var bbBaseX = baseX
+	var bbBaseY = baseY - 16 #-16 is because of block size
+	
+	#make new variables that will be changed more frequently
+	var buildingBlockX = bbBaseX
+	var buildingBlockY = bbBaseY
+	
+	
+	var buildingBase = BUILDING_BASE_SCENE.instance()
+	add_child(buildingBase)
+	buildingBase.global_position = Vector2(baseX,baseY)
+	
+	#Random Size
+	var houseWidth = rand_range(10,25)
+	houseWidth = int(houseWidth)
+	var houseHeight = rand_range(10, 35)
+	houseHeight = int(houseHeight)
+	
+	#Generate base of building.
+	for row in range(houseHeight):
+		
+		
+		for column in range(houseWidth):
+			#Left of house
+			if column == 0:
+				var block = BLOCK_3_CORNER_SCENE.instance()
+				buildingBase.add_child(block)
+				block.global_position = Vector2(buildingBlockX,buildingBlockY)
+				block.addToDB()
+			#Right of house
+			elif column == houseWidth - 1:
+				var block = BLOCK_3_CORNER_SCENE.instance()
+				block.flippedH = true
+				buildingBase.add_child(block)
+				block.global_position = Vector2(buildingBlockX,buildingBlockY)
+				block.addToDB()
+				
+				
+			#all the normal blocks
+			else:
+				
+				if buildingBlockY == baseY - (16 * 4):
+					var block = BLOCK_3_SCENE.instance()
+					buildingBase.add_child(block)
+					block.global_position = Vector2(buildingBlockX,buildingBlockY)
+					block.addToDB()
+					
+					
+				
+			
+			
+			
+			
+			buildingBlockX += 16
+		buildingBlockX = bbBaseX
+		buildingBlockY -= 16 #Block height
+	#Generate roof
+	for column in range(houseWidth):
+		#Left corner
+		if column == 0:
+			var block = BLOCK_2_CORNER_SCENE.instance()
+			block.flippedH = true
+			buildingBase.add_child(block)
+			block.global_position = Vector2(buildingBlockX,buildingBlockY)
+			block.addToDB()
+			
+		#Right corner
+		elif column == houseWidth - 1:
+			var block = BLOCK_2_CORNER_SCENE.instance()
+			buildingBase.add_child(block)
+			block.global_position = Vector2(buildingBlockX,buildingBlockY)
+			block.addToDB()
+		#All other blocks
+		else:
+			var block = BLOCK_2_SCENE.instance()
+			buildingBase.add_child(block)
+			block.global_position = Vector2(buildingBlockX,buildingBlockY)
+			block.addToDB()
+			
+			
+		buildingBlockX += 16
+		
 	
 	
 	
+	
+	
+	
+	pass
+
+
+
+
+
 
 #This one generates and builds the random buildings
 func generateStructure(baseX,baseY):
@@ -245,19 +362,22 @@ func generateStructure(baseX,baseY):
 		
 	#Add windows
 
-#Just generates the basic floor of the world
-func buildFloor():
+
+
+
+func addDecorations():
 	
+	
+	blockX = 0
+	var lastDecorationPos = Vector2()
 	
 	
 	for column in range(worldWidth):
-		
-		var block1 = BLOCK_1_SCENE.instance()
-		block1.canBreak = false
-		add_child(block1)
-		block1.global_position.x = blockX
-		block1.global_position.y = blockY
-		blockX += block1.blockWidth
-		block1.addToDB()
-	
+		var buildRandi = randi()%int(worldWidth)
+		blockX += 16
+		if buildRandi < 10 and blockX > (lastDecorationPos.x + 16) and blockX < (worldWidth * 16) - 64:
+			lastDecorationPos = Vector2(blockX,blockY)
+			var decoration = DECORATION_SCENE.instance()
+			add_child(decoration)
+			decoration.global_position = Vector2(blockX,blockY - 8)
 	
