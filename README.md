@@ -10,3 +10,4 @@
    - Klara mode is also new
    - GUI got a few changes
    - Friendly can get angry
+   - There will now be fortresses spawned if world size allows it
