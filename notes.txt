@@ -14,11 +14,10 @@ Changes made
 	Tue 15 Oct:
 		- Changed world gen algorithm to include Fortress
 		- Blocks now have hp variable
+		- Projectiles now emit light when they hit
 		
 
 Changes to make
 
 	Mon 14 Oct:
-		- Player shouldn't collide with Friendly
-		- Projectile shoud collide with Friendly
 		- Add angry noises to Friendly

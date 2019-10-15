@@ -7,6 +7,7 @@ var worldSeed = GLOBAL.worldGenSeed
 onready var BLOCK_1_SCENE = 		preload("res://Blocks/Block1.tscn") #Grey blocks
 onready var BLOCK_2_SCENE = 		preload("res://Blocks/Block2.tscn") #Blue bricks
 onready var BLOCK_2_CORNER_SCENE = 	preload("res://Blocks/Block2Corner.tscn")
+onready var BLOCK_2_BACKGROUND = 	preload("res://Blocks/Block2Background.tscn")
 onready var BLOCK_3_SCENE = 		preload("res://Blocks/Block3.tscn") #Wooden blocks
 onready var BLOCK_3_CORNER_SCENE = 	preload("res://Blocks/Block3Corner.tscn")
 
@@ -71,7 +72,9 @@ func buildWorld():
 	addBuildings()
 	addDecorations()
 	spawnPlayer()
-	spawnFriendlies()
+	
+	#Friendlies are now spawned with buildings
+	
 	#Klara mode turns all skeletons and stuff off
 	if not GLOBAL.klaraModeEnabled:
 		spawnEnemies()
@@ -114,6 +117,7 @@ func addBuildings():
 			if buildRandi < 10:
 				lastBuildingPos = Vector2(blockX,blockY)
 				generateStructure(blockX,blockY)
+				spawnFriendlies(Vector2(blockX,blockY))
 				amountOfBuildings += 1
 			
 		elif blockX > (worldWidth * 16) - (leftAndRightBufferSize + 16) and blockX < (worldWidth*16) - leftAndRightBufferSize / 2:
@@ -142,20 +146,25 @@ func spawnPlayer():
 	
 
 
-func spawnFriendlies():
+func spawnFriendlies(baseLocation):
 	
 	
-	blockX = 0
-	var ampuntOfFriendlies = 0
+	var amountOfFriendlies = 0
+	var loc = baseLocation
 	
-	for column in range(worldWidth):
-		var buildRandi = randi()%int((worldWidth + 20)/20)
-		blockX += 16
-		if ampuntOfFriendlies < (worldWidth / 50) and buildRandi < 10 and blockX < (worldWidth * 16) - 64:
-			var friendly = FRIENDLY_SCENE.instance()
-			add_child(friendly)
-			friendly.global_position = Vector2(blockX,blockY - 16)
-			ampuntOfFriendlies += 1
+	
+	if amountOfFriendlies < (worldWidth / 50):
+		var friendly = FRIENDLY_SCENE.instance()
+		var randDir = rand_range(-5,5)
+		if randDir < 0:
+			randDir = -1
+		else:
+			randDir = 1
+		friendly.dir = randDir
+		add_child(friendly)
+		friendly.global_position = Vector2(loc.x - 32,loc.y - 16)
+		amountOfFriendlies += 1
+		print(amountOfFriendlies)
 	
 
 
@@ -237,6 +246,14 @@ func generateFortress(baseX, baseY):
 						lastFloorY = buildingBlockY
 					block.addToDB()
 					numberOfFLoors += 1
+				else:
+					var block = BLOCK_2_BACKGROUND.instance()
+					buildingBase.add_child(block)
+					block.global_position = Vector2(buildingBlockX,buildingBlockY)
+					block.addToDB()
+					
+					
+					
 					
 				
 			
