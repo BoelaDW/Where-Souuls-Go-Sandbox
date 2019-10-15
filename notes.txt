@@ -15,7 +15,8 @@ Changes made
 		- Changed world gen algorithm to include Fortress
 		- Blocks now have hp variable
 		- Projectiles now emit light when they hit
-		
+		- Added Evil Mages *unfinished*
+		- Evil mages can now stand guard
 
 Changes to make
 

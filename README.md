@@ -18,3 +18,5 @@ Mon 14 Oct:
 Tue 15 Oct:
    - There will now be fortresses spawned if world size allows it
    - Blocks now have an HP system 
+   - Fortresses will now have background walls
+   - Fortresses will now be defended by Evil Mages *Not totally finished Yet*

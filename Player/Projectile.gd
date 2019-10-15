@@ -45,7 +45,7 @@ func _physics_process(delta):
 
 
 func _on_Area2D_body_entered(body):
-	if body is Block or body is Enemy or body is BuildingDoor or body is Friendly:
+	if body is Block or body is Enemy or body is BuildingDoor or body is Friendly or body is EvilMage:
 		body.destroy()
 		var hitEffect = HIT_EFFECT_SCENE.instance()
 		get_parent().add_child(hitEffect)

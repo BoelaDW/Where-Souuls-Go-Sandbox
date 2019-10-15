@@ -94,7 +94,7 @@ func getInput():
 	
 
 func interactButton():
-	if GLOBAL.selectedToolbarTool == 0  and canFire and GLOBAL.playerPower > 0:
+	if GLOBAL.selectedToolbarTool == 0  and canFire and GLOBAL.playerPower > 0 and GLOBAL.playerCanMove > 0:
 		#FireProjectile
 		var projectile = PROJECTILE.instance()
 		projectile.dir = dir
@@ -280,6 +280,11 @@ func _physics_process(delta):
 	
 	velocity.y += GRAVITY
 	
+	
+	#This is so player movement can be disabled when dead
+	velocity.y = velocity.y * GLOBAL.playerCanMove
+	velocity.x = velocity.x * GLOBAL.playerCanMove
+	
 	velocity = move_and_slide(velocity,FLOOR)
 	
 
@@ -290,7 +295,10 @@ func _on_CanFireTimer_timeout():
 
 
 
-
+func destroy(dmg = 10):
+	GLOBAL.playerHP -= dmg
+	
+	
 
 
 var shakeProgress = 0

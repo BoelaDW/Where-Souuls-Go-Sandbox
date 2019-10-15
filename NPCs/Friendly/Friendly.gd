@@ -69,6 +69,13 @@ func _physics_process(delta):
 			$Body.flip_h = false
 			
 		
+#		if notSoFriendly:
+#			GLOBAL.angryPos = self.global_position
+#		else:
+#			GLOBAL.angryPos = Vector2()
+		
+		
+		
 		
 		if GLOBAL.checkCanMoveLeft(global_position.x) and GLOBAL.checkCanMoveRight(global_position.x):
 			pass
