@@ -6,10 +6,13 @@
    - Toolbar has been added
    - Skeletons now collide with blue brick blocks
    - Some performance optimisations have been done
+
+Mon 14 Oct:
    - "Friendly" mob has been added, and they can jump
    - Klara mode is also new
    - GUI got a few changes
-   - Friendly can get angry
+   - "Friendly" can get angry
+   - Toolbar options are selected with number hotkeys (1, 2, 3, etc)
    
    
 Tue 15 Oct:
