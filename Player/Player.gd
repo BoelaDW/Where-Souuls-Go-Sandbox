@@ -36,6 +36,7 @@ onready var PROJECTILE = preload("res://Player/Projectile.tscn")
 func _ready():
 	$PowerRegenTimer.start()
 	add_to_group("Player")
+	$AnimationPlayer.play("Active")
 
 
 func getInput():
@@ -94,9 +95,10 @@ func getInput():
 
 func interactButton():
 	if GLOBAL.selectedToolbarTool == 0  and canFire and GLOBAL.playerPower > 0:
-		
+		#FireProjectile
 		var projectile = PROJECTILE.instance()
 		projectile.dir = dir
+		projectile.Ydir = blockPlaceDirY
 		projectile.velocity.x += velocity.x
 		get_parent().add_child(projectile)
 		projectile.global_position = self.global_position
@@ -105,9 +107,16 @@ func interactButton():
 		GLOBAL.playerPower -= 5
 		shakeCamera()
 		
+		if GLOBAL.checkCanMoveRight(global_position.x) and GLOBAL.checkCanMoveLeft(global_position.x):
+			velocity.x += -dir * 100
+		velocity.y += -blockPlaceDirY * 100
+		
+		
+		
+		
 		
 	elif GLOBAL.selectedToolbarTool == 1:
-		
+		#PlaceBlock
 		if blockPlaceDirX == 1:
 			var blockNewPos = Vector2(stepify($FirePosition.global_position.x,16), stepify($FirePosition.global_position.y,16))
 			
@@ -172,7 +181,6 @@ func interactButton():
 
 func _physics_process(delta):
 	
-	print(blockPlaceDirY)
 	
 	
 	
@@ -184,12 +192,12 @@ func _physics_process(delta):
 	
 	
 	if dir == 1:
-			$FirePosition.position.x = 16
+			$FirePosition.position.x = 8
 	elif dir == -1:
-		$FirePosition.position.x = -32
+		$FirePosition.position.x = -24
 	
 	if blockPlaceDirY == 1:
-		$FirePosition.position.x = -8
+		
 		$FirePosition.position.y = 16
 	elif blockPlaceDirY == -1:
 		$FirePosition.position.x = -8
@@ -210,36 +218,6 @@ func _physics_process(delta):
 		$DummyBlock.global_position = Vector2(stepify($FirePosition.global_position.x,16),stepify($FirePosition.global_position.y,16))
 		
 		
-		
-		
-#		if blockPlaceDirX == 1:
-#			$FirePosition.position.x = 16
-#			var dummyBlockPos = Vector2(stepify($FirePosition.global_position.x - 16,16), stepify($FirePosition.global_position.y,16))
-#			$DummyBlock.global_position = dummyBlockPos
-#
-#
-#		elif blockPlaceDirX == -1:
-#			$FirePosition.position.x = -16
-#			var dummyBlockPos = Vector2(stepify($FirePosition.global_position.x,16), stepify($FirePosition.global_position.y,16))
-#			$DummyBlock.global_position = dummyBlockPos
-#
-#
-#
-#
-#		if blockPlaceDirY == 1:
-#			$FirePosition.position.y = 16
-#			var dummyBlockPos = Vector2(stepify($FirePosition.global_position.x,16), stepify($FirePosition.global_position.y,16))
-#			$DummyBlock.global_position = dummyBlockPos
-#
-#		elif blockPlaceDirY == -1:
-#			$FirePosition.position.y = -16
-#			var dummyBlockPos = Vector2(stepify($FirePosition.global_position.x,16), stepify($FirePosition.global_position.y,16))
-#			$DummyBlock.global_position = dummyBlockPos
-#		else:
-#			$FirePosition.position.y = 0
-#
-#
-#
 	else:
 		$DummyBlock.visible = false
 		
@@ -263,15 +241,14 @@ func _physics_process(delta):
 		GLOBAL.goto_scene("res://WorldGenerateMenu.tscn")
 	GLOBAL.playerPos = self.global_position
 	
-	
-	if rPressed and not lPressed:
+	if rPressed and not lPressed and GLOBAL.checkCanMoveRight(global_position.x):
 		
 		velocity = velocity.linear_interpolate(Vector2(WALK_SPEED,velocity.y), delta * INTERPOLATE_SPEED)
 		$Body.flip_h = true
 		$Eyes.flip_h = true
 		dir = 1
 		blockPlaceDirX = 1
-	elif lPressed and not rPressed:
+	elif lPressed and not rPressed and GLOBAL.checkCanMoveLeft(global_position.x):
 		
 		velocity = velocity.linear_interpolate(Vector2(-WALK_SPEED,velocity.y), delta * INTERPOLATE_SPEED)
 		$Body.flip_h = false
@@ -308,6 +285,11 @@ func _physics_process(delta):
 
 func _on_CanFireTimer_timeout():
 	canFire = true
+
+
+
+
+
 
 
 

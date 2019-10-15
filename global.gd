@@ -21,11 +21,27 @@ var selectedToolbarTool = 0
 
 var blockID = 0
 onready var blockDB = []
+
+
+
+var klaraModeEnabled = false
 #----------------------------------------------
 
 
+func checkCanMoveRight(globalXPosition):
+	
+	if globalXPosition < worldGenSize*16 - 24:
+		return true
+	else:
+		return false
 
-
+func checkCanMoveLeft(globalXPosition):
+	if globalXPosition > 24:
+		return true
+	else:
+		return false
+	
+	
 
 
 var loader

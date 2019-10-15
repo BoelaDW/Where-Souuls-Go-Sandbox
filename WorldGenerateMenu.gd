@@ -13,5 +13,6 @@ func passVariables():
 	
 	GLOBAL.worldGenSeed = $HSplitContainer/SeedSB.value
 	GLOBAL.worldGenSize = $HSplitContainer/WorldSizeSB.value
+	GLOBAL.klaraModeEnabled = $HSplitContainer/KModeCheckButton.pressed
 	GLOBAL.goto_scene("res://World.tscn")
 	

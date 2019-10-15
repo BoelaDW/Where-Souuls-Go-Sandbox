@@ -9,6 +9,9 @@ var flippedH = false
 var flippedV = false
 var canBreak = true
 
+var blockHp = 1
+
+
 var blockId = 0
 
 onready var EXPLODE_SCENE = preload("res://Effects/ProjectileHitEffect.tscn")
@@ -20,9 +23,13 @@ func _ready():
 	set_mode(RigidBody2D.MODE_STATIC)
 
 func destroy():
-	if canBreak:
+	blockHp -= 1
+	if canBreak and blockHp <= 0:
+		
 		
 		GLOBAL.blockDB.erase(blockId)
+		while GLOBAL.blockDB.has(blockId):
+			GLOBAL.blockDB.erase(blockId)
 		queue_free()
 		
 	

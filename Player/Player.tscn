@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Player/Player.gd" type="Script" id=1]
 [ext_resource path="res://Player/wisp1 (1).png" type="Texture" id=2]
@@ -21,11 +21,28 @@ emission_sphere_radius = 8.0
 flag_disable_z = true
 spread = 62.14
 gravity = Vector3( 0, -10, 0 )
+angular_velocity = 1.62551e-43
 orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 color_ramp = SubResource( 3 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="Animation" id=5]
+resource_name = "Active"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Body:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0, 10 ]
+}
+
+[sub_resource type="RectangleShape2D" id=6]
 
 [node name="Player" type="KinematicBody2D"]
 collision_layer = 3
@@ -43,6 +60,7 @@ process_material = SubResource( 4 )
 texture = ExtResource( 2 )
 vframes = 4
 hframes = 4
+frame = 3
 
 [node name="Eyes" type="Sprite" parent="."]
 texture = ExtResource( 2 )
@@ -55,11 +73,16 @@ wait_time = 0.25
 one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Active = SubResource( 5 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 z_as_relative = false
 current = true
 smoothing_enabled = true
+drag_margin_left = 0.1
+drag_margin_top = 0.1
+drag_margin_right = 0.1
+drag_margin_bottom = 0.1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Camera2D"]
 
@@ -85,7 +108,7 @@ collision_layer = 17
 collision_mask = 17
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 5 )
+shape = SubResource( 6 )
 
 [node name="DummyBlock" parent="." instance=ExtResource( 4 )]
 [connection signal="timeout" from="CanFireTimer" to="." method="_on_CanFireTimer_timeout"]
