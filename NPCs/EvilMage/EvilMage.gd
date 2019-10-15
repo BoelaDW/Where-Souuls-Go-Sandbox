@@ -10,6 +10,7 @@ var velocity = Vector2()
 var dir = 1
 var dirSave = 0
 
+var onScreen = false
 
 var hp = 100
 
@@ -27,68 +28,68 @@ func _ready():
 
 
 func _physics_process(delta):
-	
-	if velocity.x < 0:
-		$Sprite.flip_h = true
-	elif velocity.x > 0:
-		$Sprite.flip_h = false
-	
-	
-	
-	if guard:
+	if onScreen:
+		if velocity.x < 0:
+			$Sprite.flip_h = true
+		elif velocity.x > 0:
+			$Sprite.flip_h = false
 		
 		
-		if (GLOBAL.playerPos.x < self.global_position.x + 500 and GLOBAL.playerPos.x > self.global_position.x - 500) or (GLOBAL.angryPos.x < self.global_position.x + 500 and GLOBAL.angryPos.x > self.global_position.x - 500):
+		
+		if guard:
 			
-			#If it targets something with the "destroy" method
-			if $TargetSystem.target(GLOBAL.playerPos):
-				$TargetSystem.fire()
+			
+			if (GLOBAL.playerPos.x < self.global_position.x + 500 and GLOBAL.playerPos.x > self.global_position.x - 500) or (GLOBAL.angryPos.x < self.global_position.x + 500 and GLOBAL.angryPos.x > self.global_position.x - 500):
 				
-				if GLOBAL.playerPos.x > self.global_position.x:
-					$Sprite.flip_h = false
+				#If it targets something with the "destroy" method
+				if $TargetSystem.target(GLOBAL.playerPos):
+					$TargetSystem.fire()
+					
+					if GLOBAL.playerPos.x > self.global_position.x:
+						$Sprite.flip_h = false
+					else:
+						$Sprite.flip_h = true
+					
+					
+					if dirSave == 0:
+						dirSave = dir
+					dir = 0
 				else:
-					$Sprite.flip_h = true
+					if dirSave != 0:
+						dir = dirSave
+						dirSave = 0
+					
 				
-				
-				if dirSave == 0:
-					dirSave = dir
-				dir = 0
-			else:
-				if dirSave != 0:
-					dir = dirSave
-					dirSave = 0
-				
+			if $FloorCheckRCLeft.is_colliding() and not $FloorCheckRCRight.is_colliding():
+				dir = -1
+			if $FloorCheckRCRight.is_colliding() and not $FloorCheckRCLeft.is_colliding():
+				dir = 1
 			
-		if $FloorCheckRCLeft.is_colliding() and not $FloorCheckRCRight.is_colliding():
-			dir = -1
-		if $FloorCheckRCRight.is_colliding() and not $FloorCheckRCLeft.is_colliding():
-			dir = 1
+			
+			if $WallCheckRCLeft.is_colliding() and not $WallCheckRCRight.is_colliding():
+				dir = 1
+			if $WallCheckRCRight.is_colliding() and not $WallCheckRCLeft.is_colliding():
+				dir = -1
+			
+			
+			if $WallCheckRCLeft.is_colliding() and $WallCheckRCRight.is_colliding():
+				dir = 0
+				print("CAN'T MOVE...")
+			
 		
 		
-		if $WallCheckRCLeft.is_colliding() and not $WallCheckRCRight.is_colliding():
-			dir = 1
-		if $WallCheckRCRight.is_colliding() and not $WallCheckRCLeft.is_colliding():
-			dir = -1
+		if hp >= 100:
+			$HealthBar.visible = false
+		else:
+			$HealthBar.visible = true
+		$HealthBar/ProgressBar.value = hp
+		
+		velocity.y += GRAVITY
+		velocity.x = MOVE_SPEED * dir
+		velocity = move_and_slide(velocity,FLOOR)
 		
 		
-		if $WallCheckRCLeft.is_colliding() and $WallCheckRCRight.is_colliding():
-			dir = 0
-			print("CAN'T MOVE...")
 		
-	
-	
-	if hp >= 100:
-		$HealthBar.visible = false
-	else:
-		$HealthBar.visible = true
-	$HealthBar/ProgressBar.value = hp
-	
-	velocity.y += GRAVITY
-	velocity.x = MOVE_SPEED * dir
-	velocity = move_and_slide(velocity,FLOOR)
-	
-	
-	
 
 
 func destroy(dmg = 10):
@@ -101,3 +102,11 @@ func destroy(dmg = 10):
 	
 	
 	
+
+
+func _on_VisibilityNotifier2D_screen_entered():
+	onScreen = true
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	onScreen = false

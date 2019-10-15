@@ -65,3 +65,9 @@ collision_mask = 1027
 enabled = true
 cast_to = Vector2( 16, 0 )
 collision_mask = 1027
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 0, 7.15256e-07 )
+scale = Vector2( 1, 1.60082 )
+[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

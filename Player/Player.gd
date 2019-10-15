@@ -300,6 +300,11 @@ func destroy(dmg = 10):
 	
 	
 
+func heal(heal= 5):
+	if GLOBAL.playerHP < 100:
+		GLOBAL.playerHP += heal
+	
+	
 
 var shakeProgress = 0
 func shakeCamera():
