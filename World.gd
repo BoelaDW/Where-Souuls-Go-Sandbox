@@ -20,6 +20,10 @@ onready var PLAYER_SCENE = 			preload("res://Player/Player.tscn")
 
 #Just something to add a little more souul to the game ;D
 onready var DECORATION_SCENE = 		preload("res://Objects/Decoration.tscn")
+onready var CAMPFIRE_SCENE = 		preload("res://Objects/Campfire.tscn")
+
+
+#NPCs
 onready var ENEMY_1_SCENE = 		preload("res://NPCs/BasicEnemy.tscn")
 onready var FRIENDLY_SCENE = 		preload("res://NPCs/Friendly/Friendly.tscn")
 onready var EVIL_MAGE_SCENE = 		preload("res://NPCs/EvilMage/EvilMage.tscn")
@@ -204,9 +208,9 @@ func generateFortress(baseX, baseY):
 	buildingBase.global_position = Vector2(baseX,baseY)
 	
 	#Random Size
-	var houseWidth = rand_range(10,25)
+	var houseWidth = rand_range(20,30)
 	houseWidth = int(houseWidth)
-	var houseHeight = rand_range(3,8) #Did a little math to make nice size floors
+	var houseHeight = rand_range(6,10) #This will be the amount of floors.... Did a little math to make nice size floors
 	houseHeight = (int(houseHeight) * 4) - 1
 	
 	var numberOfFLoors = int(houseHeight / 4)
@@ -253,12 +257,27 @@ func generateFortress(baseX, baseY):
 					buildingBase.add_child(block)
 					block.global_position = Vector2(buildingBlockX,buildingBlockY)
 					
+					
+					
+					
+					
 					#Spawning mages inside
-					if column == 4 and buildingBlockY == lastFloorY - (16 * 2) and row > houseHeight / 2:
+					var randomizeMageSpawn = int(rand_range(-10,10))
+					
+					
+					if randomizeMageSpawn > 0 and (column == 4 and buildingBlockY == lastFloorY - (16 * 2) and row > houseHeight / 2) or  randomizeMageSpawn > 0 and (column == houseWidth - 2 and buildingBlockY == lastFloorY - (16 * 2) and row > houseHeight / 3):
 						var mage = EVIL_MAGE_SCENE.instance()
 						mage.guard = true
 						get_parent().add_child(mage)
 						mage.global_position = Vector2(buildingBlockX,buildingBlockY)
+						
+					elif (column == houseWidth - 4 and row == 4):
+						
+						var campfire = CAMPFIRE_SCENE.instance()
+						
+						get_parent().add_child(campfire)
+						campfire.global_position = Vector2(buildingBlockX,buildingBlockY + 18)
+						
 						
 						
 					
