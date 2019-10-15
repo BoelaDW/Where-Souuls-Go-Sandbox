@@ -9,7 +9,7 @@ var playerPos = Vector2()
 
 var playerHP = 100
 var playerPower = 100
-
+var playerCanMove = 1
 
 
 

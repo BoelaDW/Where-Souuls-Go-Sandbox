@@ -10,7 +10,21 @@ func _physics_process(delta):
 	$GridContainer/VBoxLT/PowerBar.value = GLOBAL.playerPower
 	
 	updateToolbar()
+	checkIfIsDead()
+
+func checkIfIsDead():
+	if GLOBAL.playerHP <= 1:
+		#Dead
+		GLOBAL.playerCanMove = 0
+		$GridContainer.visible = false
+		$DeathMenu.visible = true
+		
 	
+	
+	
+	
+
+
 
 
 func updateToolbar():
@@ -114,3 +128,7 @@ func _on_ToolBarItem1_mouse_entered():
 
 func _on_ToolBarItem2_mouse_entered():
 	GLOBAL.selectedToolbarTool = 1
+
+
+func _on_Button_pressed():
+	GLOBAL.goto_scene("res://WorldGenerateMenu.tscn")

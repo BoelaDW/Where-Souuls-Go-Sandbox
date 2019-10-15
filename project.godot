@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://NPCs/BasicEnemy.gd"
 }, {
 "base": "KinematicBody2D",
+"class": "EvilMage",
+"language": "GDScript",
+"path": "res://NPCs/EvilMage/EvilMage.gd"
+}, {
+"base": "KinematicBody2D",
 "class": "Friendly",
 "language": "GDScript",
 "path": "res://NPCs/Friendly/Friendly.gd"
@@ -44,6 +49,7 @@ _global_script_class_icons={
 "BreakableDoor": "",
 "BuildingDoor": "",
 "Enemy": "",
+"EvilMage": "",
 "Friendly": "",
 "Player": ""
 }

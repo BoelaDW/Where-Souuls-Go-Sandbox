@@ -22,6 +22,7 @@ onready var PLAYER_SCENE = 			preload("res://Player/Player.tscn")
 onready var DECORATION_SCENE = 		preload("res://Objects/Decoration.tscn")
 onready var ENEMY_1_SCENE = 		preload("res://NPCs/BasicEnemy.tscn")
 onready var FRIENDLY_SCENE = 		preload("res://NPCs/Friendly/Friendly.tscn")
+onready var EVIL_MAGE_SCENE = 		preload("res://NPCs/EvilMage/EvilMage.tscn")
 
 
 #This valuse will be set via the world gen menu
@@ -247,12 +248,19 @@ func generateFortress(baseX, baseY):
 					block.addToDB()
 					numberOfFLoors += 1
 				else:
+					#Adding Background
 					var block = BLOCK_2_BACKGROUND.instance()
 					buildingBase.add_child(block)
 					block.global_position = Vector2(buildingBlockX,buildingBlockY)
-					block.addToDB()
 					
-					
+					#Spawning mages inside
+					if column == 4 and buildingBlockY == lastFloorY - (16 * 2) and row > houseHeight / 2:
+						var mage = EVIL_MAGE_SCENE.instance()
+						mage.guard = true
+						get_parent().add_child(mage)
+						mage.global_position = Vector2(buildingBlockX,buildingBlockY)
+						
+						
 					
 					
 				
@@ -293,7 +301,14 @@ func generateFortress(baseX, baseY):
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
-			
+			else:
+				
+				var block = BLOCK_2_BACKGROUND.instance()
+				buildingBase.add_child(block)
+				block.global_position = Vector2(buildingBlockX,buildingBlockY)
+				
+				
+				
 			
 		buildingBlockX += 16
 	buildingBlockX = bbBaseX - (16 * 3)
