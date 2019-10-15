@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://NPCs/EvilMage/EvilMage.gd" type="Script" id=1]
 [ext_resource path="res://NPCs/EvilMage/GrimReaper1.png" type="Texture" id=2]
@@ -6,6 +6,12 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 16 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.721569, 1, 0.384314, 1 )
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.603922, 0.313726, 0.313726, 1 )
 
 [node name="EvilMage" type="KinematicBody2D"]
 collision_layer = 1024
@@ -22,3 +28,40 @@ hframes = 3
 frame = 2
 
 [node name="TargetSystem" parent="." instance=ExtResource( 3 )]
+
+[node name="HealthBar" type="Node2D" parent="."]
+visible = false
+position = Vector2( 0, -24 )
+
+[node name="ProgressBar" type="ProgressBar" parent="HealthBar"]
+margin_left = -16.0
+margin_top = -9.0
+margin_right = 16.0
+margin_bottom = -2.0
+rect_min_size = Vector2( 0, 7 )
+custom_styles/fg = SubResource( 2 )
+custom_styles/bg = SubResource( 3 )
+step = 1.0
+percent_visible = false
+
+[node name="FloorCheckRCLeft" type="RayCast2D" parent="."]
+position = Vector2( -8, 0 )
+enabled = true
+cast_to = Vector2( 0, 25 )
+collision_mask = 1027
+
+[node name="FloorCheckRCRight" type="RayCast2D" parent="."]
+position = Vector2( 8, 0 )
+enabled = true
+cast_to = Vector2( 0, 25 )
+collision_mask = 1027
+
+[node name="WallCheckRCLeft" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( -16, 0 )
+collision_mask = 1027
+
+[node name="WallCheckRCRight" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 16, 0 )
+collision_mask = 1027

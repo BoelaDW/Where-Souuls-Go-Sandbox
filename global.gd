@@ -4,6 +4,8 @@ extends Node
 #GLOBAL VARIABLES GO HERE
 var worldGenSeed = 0
 var worldGenSize = 100
+var klaraModeEnabled = false
+
 
 var playerPos = Vector2()
 
@@ -12,10 +14,7 @@ var playerPower = 100
 var playerCanMove = 1
 
 
-
-
 var selectedToolbarTool = 0
-
 
 
 
@@ -23,8 +22,12 @@ var blockID = 0
 onready var blockDB = []
 
 
+var angryPos = Vector2()
 
-var klaraModeEnabled = false
+
+
+
+
 #----------------------------------------------
 
 

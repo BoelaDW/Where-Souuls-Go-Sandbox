@@ -295,7 +295,10 @@ func _on_CanFireTimer_timeout():
 
 
 
-
+func destroy(dmg = 10):
+	GLOBAL.playerHP -= dmg
+	
+	
 
 
 var shakeProgress = 0

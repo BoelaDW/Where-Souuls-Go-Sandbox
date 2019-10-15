@@ -4,7 +4,7 @@ extends Node2D
 onready var PROJECTILE_ONE = preload("res://Projectiles/MagicBlast1.tscn")
 
 
-
+var canFire = true
 
 func _ready():
 	pass
@@ -23,7 +23,9 @@ func target(targetPos):
 
 
 func fire(projectileType = 0):
-	if projectileType == 0:
+	if projectileType == 0 and canFire:
+		canFire = false
+		$FireTimer.start()
 		
 		var projectile = PROJECTILE_ONE.instance()
 		projectile.bodyRotation = rotation
@@ -38,3 +40,6 @@ func fire(projectileType = 0):
 	
 	
 	
+
+func _on_FireTimer_timeout():
+	canFire = true

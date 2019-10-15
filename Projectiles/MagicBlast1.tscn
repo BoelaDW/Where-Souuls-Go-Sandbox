@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Projectiles/MagicBlast1.gd" type="Script" id=1]
-[ext_resource path="res://Projectiles/Particles Spritesheet2.png" type="Texture" id=2]
+[ext_resource path="res://Projectiles/magic projectile 1.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 6.0
+radius = 2.0
 
 [sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0, 0.777778 )
@@ -21,7 +21,7 @@ curve = SubResource( 4 )
 
 [sub_resource type="ParticlesMaterial" id=6]
 emission_shape = 1
-emission_sphere_radius = 8.0
+emission_sphere_radius = 4.0
 flag_disable_z = true
 spread = 180.0
 gravity = Vector3( 0, 9, 0 )
@@ -33,23 +33,8 @@ scale_random = 1.0
 scale_curve = SubResource( 5 )
 color_ramp = SubResource( 3 )
 
-[sub_resource type="Animation" id=7]
-resource_name = "Fire"
-length = 2.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 2 ),
-"transitions": PoolRealArray( 1, 0.933033 ),
-"update": 0,
-"values": [ 0, 48 ]
-}
-
 [sub_resource type="CircleShape2D" id=8]
+radius = 5.0
 
 [node name="MagicBlast1" type="KinematicBody2D"]
 collision_layer = 0
@@ -60,11 +45,9 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
+rotation = 1.5708
 texture = ExtResource( 2 )
 flip_v = true
-vframes = 7
-hframes = 7
-frame = 48
 
 [node name="Particles2D" type="Particles2D" parent="."]
 amount = 32
@@ -72,10 +55,9 @@ randomness = 0.41
 local_coords = false
 process_material = SubResource( 6 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Fire = SubResource( 7 )
-
 [node name="Area2D" type="Area2D" parent="."]
+collision_layer = 63
+collision_mask = 63
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 8 )
