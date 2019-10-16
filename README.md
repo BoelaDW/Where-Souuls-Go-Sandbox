@@ -24,6 +24,8 @@ Tue 15 Oct:
 Wed 16 Oct:
    - Did a little bit of polishing on some features
    - Campfires! To heal you after a fight (*Not totally finished*)
+   - Mega Eagle!! It's a menace that sweeps across the world, killing everything with its laser beam.
+   - We have time! Like.. a time system, one that seems to work for now
 
 
 
