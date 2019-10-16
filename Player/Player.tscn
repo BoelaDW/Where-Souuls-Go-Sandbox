@@ -80,9 +80,9 @@ z_as_relative = false
 current = true
 smoothing_enabled = true
 drag_margin_left = 0.1
-drag_margin_top = 0.1
+drag_margin_top = 0.0
 drag_margin_right = 0.1
-drag_margin_bottom = 0.1
+drag_margin_bottom = 0.3
 
 [node name="CanvasLayer" type="CanvasLayer" parent="Camera2D"]
 
@@ -111,6 +111,10 @@ collision_mask = 17
 shape = SubResource( 6 )
 
 [node name="DummyBlock" parent="." instance=ExtResource( 4 )]
+
+[node name="FallDmgRC" type="RayCast2D" parent="."]
+enabled = true
+collision_mask = 3
 [connection signal="timeout" from="CanFireTimer" to="." method="_on_CanFireTimer_timeout"]
 [connection signal="timeout" from="ShakeTimer" to="." method="_on_ShakeTimer_timeout"]
 [connection signal="timeout" from="PowerRegenTimer" to="." method="_on_PowerRegenTimer_timeout"]

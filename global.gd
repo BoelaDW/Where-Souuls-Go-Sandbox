@@ -26,9 +26,18 @@ var angryPos = Vector2()
 
 
 
+#Time system
+var baseRealTime = 0.0
+var currentGameTime = 0.0
 
 
+#Mega eagle system
+var bellsRinging = false
+var eagleComing = false
 #----------------------------------------------
+
+onready var LOADING_SCREEN = preload("res://UI/LoadingScene.tscn")
+
 
 
 func checkCanMoveRight(globalXPosition):
@@ -53,13 +62,82 @@ var time_max = 100 # msec
 var current_scene
 
 
+
+var loadingScene
+
 func _ready():
+	set_process(false)
 	var root = get_tree().get_root()
 	current_scene = root.get_child(root.get_child_count() -1)
+	loadingScene = LOADING_SCREEN.instance()
+
+#set base time in decimal
+
+
+
+
+
+
+func setBaseTime():
+	
+	#Get current time as a decimal
+	#Don't know how yet aaahhhhhhhhhhhh
+	
+	var currentRealTime = OS.get_time()
+	
+	var currentRealMinute = float(currentRealTime.minute)#Revert to minute
+	var currentRealHour = float(currentRealTime.hour)
+	
+	
+	currentRealMinute = currentRealMinute / 60
+	
+	baseRealTime = currentRealMinute + currentRealHour
+	stepify(baseRealTime,0.001)
+	#In this number a 1 is an hour, 0.5 is half and hour etc
+	
+
+func checkCurrentTime():
+	
+	var currentRealTime = OS.get_time()
+	
+	var currentRealMinute = float(currentRealTime.minute)#Revert to minute
+	var currentRealHour = float(currentRealTime.hour)
+	
+	
+	currentRealMinute = currentRealMinute / 60
+	
+	var currentTime = currentRealMinute + currentRealHour
+	currentGameTime = currentTime - baseRealTime
+	stepify(currentGameTime,0.001)
+	#0.25 is 15 Minutes
+	if currentGameTime >= 0.25 or currentGameTime < 0:
+		setBaseTime()
+
+	
+
+
+func _physics_process(delta):
+	
+	checkCurrentTime()
+	
+	
+	
+	
+	
+	
+
+
+
 
 
 
 func goto_scene(path): # game requests to switch to this scene
+	
+	#When changing scenes, reset clock
+	setBaseTime()
+	
+	
+	
 	loader = ResourceLoader.load_interactive(path)
 	if loader == null: # check for errors
 		print("ERROR")
@@ -69,7 +147,9 @@ func goto_scene(path): # game requests to switch to this scene
 	current_scene.queue_free() # get rid of the old scene
 	# start your "loading..." animation
 	#get_node("animation").play("loading")
-	
+	if not get_children().has(loadingScene):
+		add_child(loadingScene)
+	get_node("/root/GLOBAL/LoadingScene").visible = true
 	wait_frames = 1
 
 
@@ -93,6 +173,7 @@ func _process(time):
 		if err == ERR_FILE_EOF: # Finished loading.
 			var resource = loader.get_resource()
 			loader = null
+			get_node("/root/GLOBAL/LoadingScene").visible = false
 			set_new_scene(resource)
 			break
 		elif err == OK:
@@ -103,13 +184,14 @@ func _process(time):
 			break
 
 
-
+var progress = 0.0
 
 func update_progress():
-	var progress = float(loader.get_stage()) / loader.get_stage_count()
+	progress = float(loader.get_stage()) / loader.get_stage_count()
 	# Update your progress bar?
 	#get_node("progress").set_progress(progress)
-	print(progress)
+	
+	
 	# ... or update a progress animation?
 	#var length = get_node("animation").get_current_animation_length()
 	
