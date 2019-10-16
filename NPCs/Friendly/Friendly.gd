@@ -11,7 +11,7 @@ var stopping = false
 var notSoFriendly = false
 
 var angerLevel = 0
-
+var hp = 50
 
 
 var onScreen = false
@@ -134,7 +134,12 @@ func _physics_process(delta):
 
 
 #Not really destroy, just makes him a bit angry
-func destroy():
+func destroy(dmg = 1,canDestroyBlocks = true):
+	hp -= dmg
+	if hp <= 0:
+		queue_free()
+	
+	
 	
 	angerLevel += 1
 	

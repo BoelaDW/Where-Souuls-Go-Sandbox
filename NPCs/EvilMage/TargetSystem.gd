@@ -22,14 +22,14 @@ func target(targetPos):
 	
 
 
-func fire(projectileType = 0):
+func fire(projectileType = 0, fireTime = 1):
 	if projectileType == 0 and canFire:
 		canFire = false
-		$FireTimer.start()
+		$FireTimer.start(fireTime)
 		
 		var projectile = PROJECTILE_ONE.instance()
 		projectile.bodyRotation = rotation
-		get_parent().add_child(projectile)
+		get_parent().get_parent().add_child(projectile)
 		projectile.global_position = $Position2D.global_position
 		
 		

@@ -16,9 +16,16 @@ Changes made
 		- Blocks now have hp variable
 		- Projectiles now emit light when they hit
 		- Added Evil Mages *unfinished*
-		- Evil mages can now stand guard
+		- Evil mages can now guard
+	
+	Wed 16 Oct:
+		- There is now a time system with 15 minute days
+		- Mega Eagle!! He sweeps over the world and kills everyone with his laser
+		
 
 Changes to make
-
-	Mon 14 Oct:
-		- Add angry noises to Friendly
+---------------
+Implement time system
+Add Mega eagle
+City bells
+City bell warning popup

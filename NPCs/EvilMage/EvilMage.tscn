@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://NPCs/EvilMage/EvilMage.gd" type="Script" id=1]
 [ext_resource path="res://NPCs/EvilMage/GrimReaper1.png" type="Texture" id=2]
@@ -13,6 +13,37 @@ bg_color = Color( 0.721569, 1, 0.384314, 1 )
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0.603922, 0.313726, 0.313726, 1 )
 
+[sub_resource type="Animation" id=4]
+resource_name = "Shoot"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.7, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 3, 7, 3 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Walk"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 2, 3 ]
+}
+
 [node name="EvilMage" type="KinematicBody2D"]
 collision_layer = 1024
 collision_mask = 1024
@@ -25,7 +56,7 @@ shape = SubResource( 1 )
 texture = ExtResource( 2 )
 vframes = 3
 hframes = 3
-frame = 2
+frame = 3
 
 [node name="TargetSystem" parent="." instance=ExtResource( 3 )]
 
@@ -47,21 +78,23 @@ percent_visible = false
 [node name="FloorCheckRCLeft" type="RayCast2D" parent="."]
 position = Vector2( -8, 0 )
 enabled = true
-cast_to = Vector2( 0, 25 )
+cast_to = Vector2( -8, 25 )
 collision_mask = 1027
 
 [node name="FloorCheckRCRight" type="RayCast2D" parent="."]
 position = Vector2( 8, 0 )
 enabled = true
-cast_to = Vector2( 0, 25 )
+cast_to = Vector2( 8, 25 )
 collision_mask = 1027
 
 [node name="WallCheckRCLeft" type="RayCast2D" parent="."]
+position = Vector2( 0, 8 )
 enabled = true
 cast_to = Vector2( -16, 0 )
 collision_mask = 1027
 
 [node name="WallCheckRCRight" type="RayCast2D" parent="."]
+position = Vector2( 0, 8 )
 enabled = true
 cast_to = Vector2( 16, 0 )
 collision_mask = 1027
@@ -69,5 +102,10 @@ collision_mask = 1027
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 position = Vector2( 0, 7.15256e-07 )
 scale = Vector2( 1, 1.60082 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Shoot = SubResource( 4 )
+anims/Walk = SubResource( 5 )
 [connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
