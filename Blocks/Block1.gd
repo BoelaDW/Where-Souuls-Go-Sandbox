@@ -22,8 +22,9 @@ func _ready():
 	#Hopefully this can be used to set them back to rigidBodies at some point
 	set_mode(RigidBody2D.MODE_STATIC)
 
-func destroy():
-	blockHp -= 1
+func destroy(dmg = 1,canBreakBlocks = true):
+	if canBreakBlocks:
+		blockHp -= dmg
 	if canBreak and blockHp <= 0:
 		
 		

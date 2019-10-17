@@ -177,7 +177,11 @@ func interactButton():
 
 
 
-
+func testForFallDmg():
+	pass
+	
+	
+	
 
 func _physics_process(delta):
 	
@@ -295,9 +299,10 @@ func _on_CanFireTimer_timeout():
 
 
 
-func destroy(dmg = 10):
+func destroy(dmg = 10,canDestroyBlocks = true):
 	GLOBAL.playerHP -= dmg
-	
+	velocity.y = -100
+	velocity.x = 20 * -dir
 	
 
 func heal(heal= 5):

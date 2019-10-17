@@ -39,11 +39,12 @@ func _physics_process(delta):
 		if guard:
 			
 			
-			if (GLOBAL.playerPos.x < self.global_position.x + 500 and GLOBAL.playerPos.x > self.global_position.x - 500) or (GLOBAL.angryPos.x < self.global_position.x + 500 and GLOBAL.angryPos.x > self.global_position.x - 500):
+			if (GLOBAL.playerPos.x < self.global_position.x + 350 and GLOBAL.playerPos.x > self.global_position.x - 350):
 				
 				#If it targets something with the "destroy" method
 				if $TargetSystem.target(GLOBAL.playerPos):
-					$TargetSystem.fire()
+					$AnimationPlayer.play("Shoot")
+					
 					
 					if GLOBAL.playerPos.x > self.global_position.x:
 						$Sprite.flip_h = false
@@ -55,6 +56,7 @@ func _physics_process(delta):
 						dirSave = dir
 					dir = 0
 				else:
+					$AnimationPlayer.play("Walk")
 					if dirSave != 0:
 						dir = dirSave
 						dirSave = 0
@@ -92,7 +94,7 @@ func _physics_process(delta):
 		
 
 
-func destroy(dmg = 10):
+func destroy(dmg = 10,canDestroyBlocks = true):
 	hp -= dmg
 	if hp <= 0:
 		
@@ -110,3 +112,8 @@ func _on_VisibilityNotifier2D_screen_entered():
 
 func _on_VisibilityNotifier2D_screen_exited():
 	onScreen = false
+
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "Shoot":
+		$TargetSystem.fire()

@@ -27,6 +27,7 @@ onready var CAMPFIRE_SCENE = 		preload("res://Objects/Campfire.tscn")
 onready var ENEMY_1_SCENE = 		preload("res://NPCs/BasicEnemy.tscn")
 onready var FRIENDLY_SCENE = 		preload("res://NPCs/Friendly/Friendly.tscn")
 onready var EVIL_MAGE_SCENE = 		preload("res://NPCs/EvilMage/EvilMage.tscn")
+onready var MEGA_EAGLE_SCENE = 		preload("res://NPCs/MegaEagle.tscn")
 
 
 #This valuse will be set via the world gen menu
@@ -77,7 +78,7 @@ func buildWorld():
 	addBuildings()
 	addDecorations()
 	spawnPlayer()
-	
+	spawnMegaEagle()
 	#Friendlies are now spawned with buildings
 	
 	#Klara mode turns all skeletons and stuff off
@@ -147,8 +148,24 @@ func spawnPlayer():
 	var spawnPosX = (worldWidth * 16) / 2 #Can be changed to worldWidth * 8 for simplicity
 	var player = PLAYER_SCENE.instance()
 	add_child(player)
-	player.global_position = Vector2(spawnPosX,0)
+	player.global_position = Vector2(spawnPosX,-64)
 	
+
+
+func spawnMegaEagle():
+	
+	var eagle = MEGA_EAGLE_SCENE.instance()
+	add_child(eagle)
+	eagle.global_position = Vector2(-512, -256)
+	
+	
+	
+	
+
+
+
+
+
 
 
 func spawnFriendlies(baseLocation):
@@ -169,7 +186,7 @@ func spawnFriendlies(baseLocation):
 		add_child(friendly)
 		friendly.global_position = Vector2(loc.x - 32,loc.y - 16)
 		amountOfFriendlies += 1
-		print(amountOfFriendlies)
+		
 	
 
 
@@ -265,7 +282,7 @@ func generateFortress(baseX, baseY):
 					var randomizeMageSpawn = int(rand_range(-10,10))
 					
 					
-					if randomizeMageSpawn > 0 and (column == 4 and buildingBlockY == lastFloorY - (16 * 2) and row > houseHeight / 2) or  randomizeMageSpawn > 0 and (column == houseWidth - 2 and buildingBlockY == lastFloorY - (16 * 2) and row > houseHeight / 3):
+					if randomizeMageSpawn > 0 and (column == 4 and buildingBlockY == lastFloorY - (16) and row > houseHeight / 2) or  randomizeMageSpawn > 0 and (column == houseWidth - 2 and buildingBlockY == lastFloorY - (16 * 2) and row > houseHeight / 3):
 						var mage = EVIL_MAGE_SCENE.instance()
 						mage.guard = true
 						get_parent().add_child(mage)

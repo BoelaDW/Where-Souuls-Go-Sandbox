@@ -1,68 +1,100 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://WorldGenerateMenu.gd" type="Script" id=1]
+[ext_resource path="res://Fonts/8-bit-fontt.tres" type="DynamicFont" id=2]
+[ext_resource path="res://UI/ButtonStylebox.tres" type="StyleBox" id=3]
 
-[node name="WorldGenerateMenu" type="MarginContainer"]
+[sub_resource type="Theme" id=1]
+default_font = ExtResource( 2 )
+
+[sub_resource type="Theme" id=2]
+default_font = ExtResource( 2 )
+
+[node name="ColorRect" type="ColorRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 100
-custom_constants/margin_top = 50
-custom_constants/margin_left = 100
-custom_constants/margin_bottom = 50
+color = Color( 0.152941, 0.12549, 0.203922, 1 )
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 32
+custom_constants/margin_top = 32
+custom_constants/margin_left = 32
+custom_constants/margin_bottom = 32
 script = ExtResource( 1 )
 
-[node name="HSplitContainer" type="VBoxContainer" parent="."]
-margin_left = 100.0
-margin_top = 50.0
-margin_right = 540.0
-margin_bottom = 310.0
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+margin_left = 32.0
+margin_top = 32.0
+margin_right = 608.0
+margin_bottom = 328.0
 
-[node name="Label" type="Label" parent="HSplitContainer"]
-margin_right = 440.0
-margin_bottom = 14.0
-text = "World Size"
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_right = 286.0
+margin_bottom = 296.0
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_right = 286.0
+margin_bottom = 24.0
+custom_fonts/font = ExtResource( 2 )
+text = "World size"
+
+[node name="SBWorldSize" type="SpinBox" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 28.0
+margin_right = 286.0
+margin_bottom = 62.0
+theme = SubResource( 1 )
+min_value = 10.0
+max_value = 1e+07
+value = 100.0
 align = 1
 
-[node name="WorldSizeSB" type="SpinBox" parent="HSplitContainer"]
-margin_top = 18.0
-margin_right = 440.0
-margin_bottom = 42.0
-min_value = 1.0
-max_value = 999999.0
-value = 200.0
-align = 1
-
-[node name="Label2" type="Label" parent="HSplitContainer"]
-margin_top = 46.0
-margin_right = 440.0
-margin_bottom = 96.0
-rect_min_size = Vector2( 0, 50 )
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 66.0
+margin_right = 286.0
+margin_bottom = 90.0
+custom_fonts/font = ExtResource( 2 )
 text = "Seed"
+
+[node name="SBSeed" type="SpinBox" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 94.0
+margin_right = 286.0
+margin_bottom = 128.0
+theme = SubResource( 2 )
+max_value = 1e+08
 align = 1
-valign = 2
 
-[node name="SeedSB" type="SpinBox" parent="HSplitContainer"]
-margin_top = 100.0
-margin_right = 440.0
-margin_bottom = 124.0
-max_value = 999999.0
-align = 1
-
-[node name="Button" type="Button" parent="HSplitContainer"]
-margin_left = 160.0
-margin_top = 128.0
-margin_right = 280.0
-margin_bottom = 178.0
-grow_horizontal = 2
-rect_min_size = Vector2( 120, 50 )
-size_flags_horizontal = 4
-size_flags_vertical = 2
-text = "Generate World"
-
-[node name="KModeCheckButton" type="CheckButton" parent="HSplitContainer"]
-margin_top = 220.0
-margin_right = 440.0
-margin_bottom = 260.0
+[node name="CBKlaraMode" type="CheckButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+margin_top = 132.0
+margin_right = 286.0
+margin_bottom = 172.0
+custom_fonts/font = ExtResource( 2 )
 pressed = true
 text = "Klara mode"
-[connection signal="pressed" from="HSplitContainer/Button" to="." method="_on_Button_pressed"]
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+margin_left = 290.0
+margin_right = 576.0
+margin_bottom = 296.0
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="ButtonRandom" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 122.0
+margin_right = 286.0
+margin_bottom = 146.0
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
+text = "Generate Random World"
+
+[node name="ButtonGenerate" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 150.0
+margin_right = 286.0
+margin_bottom = 174.0
+custom_styles/normal = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
+text = "Generate World From Inputs"
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/ButtonRandom" to="MarginContainer" method="_on_ButtonRandom_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/ButtonGenerate" to="MarginContainer" method="_on_ButtonGenerate_pressed"]
