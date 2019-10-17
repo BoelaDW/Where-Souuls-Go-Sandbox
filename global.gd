@@ -92,7 +92,7 @@ func setBaseTime():
 	
 	var currentRealTime = OS.get_time()
 	
-	var currentRealMinute = float(currentRealTime.second)#Revert to minute
+	var currentRealMinute = float(currentRealTime.minute)#Revert to minute
 	var currentRealHour = float(currentRealTime.hour)
 	
 	
@@ -107,7 +107,7 @@ func checkCurrentTime():
 	
 	var currentRealTime = OS.get_time()
 	
-	var currentRealMinute = float(currentRealTime.second)#Revert to minute
+	var currentRealMinute = float(currentRealTime.minute)#Revert to minute
 	var currentRealHour = float(currentRealTime.hour)
 	
 	
