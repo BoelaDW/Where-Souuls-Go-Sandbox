@@ -19,7 +19,7 @@ Tue 15 Oct:
    - There will now be fortresses spawned if world size allows it
    - Blocks now have an HP system 
    - Fortresses will now have background walls
-   - Fortresses will now be defended by Evil Mages (*Not totally finished Yet*)
+   - Fortresses will now be defended by Evil Mages
 
 Wed 16 Oct:
    - Did a little bit of polishing on some features
@@ -31,6 +31,11 @@ Thu 17 Oct:
     - Changed the Evil Mages' targeting system a little so it feels better
     - Around midnight (In-game time) the Mega Eagle will do his thing
     
+Fri 18 Oct:
+    - Performance improvements
+    - Houses are generated as shelter
+    - Corner block collision shapes aren't square anymore
+    - Friendlies now run home when the Mega Eagle is coming
 
 
 
