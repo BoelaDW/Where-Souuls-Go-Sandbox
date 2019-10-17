@@ -37,6 +37,10 @@ var processedGameTime = 0
 #Mega eagle system
 var bellsRinging = false
 var eagleComing = false
+
+
+#Block Placement Debug System
+var blockPlacementDebug = false
 #----------------------------------------------
 
 onready var LOADING_SCREEN = preload("res://UI/LoadingScene.tscn")
@@ -88,7 +92,7 @@ func setBaseTime():
 	
 	var currentRealTime = OS.get_time()
 	
-	var currentRealMinute = float(currentRealTime.minute)#Revert to minute
+	var currentRealMinute = float(currentRealTime.second)#Revert to minute
 	var currentRealHour = float(currentRealTime.hour)
 	
 	
@@ -103,7 +107,7 @@ func checkCurrentTime():
 	
 	var currentRealTime = OS.get_time()
 	
-	var currentRealMinute = float(currentRealTime.minute)#Revert to minute
+	var currentRealMinute = float(currentRealTime.second)#Revert to minute
 	var currentRealHour = float(currentRealTime.hour)
 	
 	

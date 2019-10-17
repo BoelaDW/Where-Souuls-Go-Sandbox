@@ -71,7 +71,6 @@ margin_top = 132.0
 margin_right = 286.0
 margin_bottom = 172.0
 custom_fonts/font = ExtResource( 2 )
-pressed = true
 text = "Klara mode"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
@@ -82,19 +81,26 @@ size_flags_horizontal = 3
 alignment = 1
 
 [node name="ButtonRandom" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
-margin_top = 122.0
+margin_top = 100.0
 margin_right = 286.0
-margin_bottom = 146.0
+margin_bottom = 124.0
 custom_styles/normal = ExtResource( 3 )
 custom_fonts/font = ExtResource( 2 )
 text = "Generate Random World"
 
 [node name="ButtonGenerate" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
-margin_top = 150.0
+margin_top = 128.0
 margin_right = 286.0
-margin_bottom = 174.0
+margin_bottom = 152.0
 custom_styles/normal = ExtResource( 3 )
 custom_fonts/font = ExtResource( 2 )
 text = "Generate World From Inputs"
+
+[node name="CheckButton" type="CheckButton" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+margin_top = 156.0
+margin_right = 286.0
+margin_bottom = 196.0
+pressed = true
+text = "Block Debug Mode"
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/ButtonRandom" to="MarginContainer" method="_on_ButtonRandom_pressed"]
 [connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer2/ButtonGenerate" to="MarginContainer" method="_on_ButtonGenerate_pressed"]

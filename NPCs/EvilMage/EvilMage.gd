@@ -108,10 +108,12 @@ func destroy(dmg = 10,canDestroyBlocks = true):
 
 func _on_VisibilityNotifier2D_screen_entered():
 	onScreen = true
+	set_physics_process(true)
 
 
 func _on_VisibilityNotifier2D_screen_exited():
 	onScreen = false
+	set_physics_process(false)
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):
