@@ -22,13 +22,13 @@ tracks/0/keys = {
 "values": [ 0, 11 ]
 }
 
-[sub_resource type="Curve" id=4]
+[sub_resource type="Curve" id=3]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.978961, 0.2514 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=5]
-curve = SubResource( 4 )
+[sub_resource type="CurveTexture" id=4]
+curve = SubResource( 3 )
 
-[sub_resource type="ParticlesMaterial" id=3]
+[sub_resource type="ParticlesMaterial" id=5]
 emission_shape = 2
 emission_box_extents = Vector3( 1, 1, 1 )
 flag_disable_z = true
@@ -41,7 +41,7 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 5.0
 scale_random = 1.0
-scale_curve = SubResource( 5 )
+scale_curve = SubResource( 4 )
 
 [sub_resource type="Curve" id=6]
 _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), -4.22492, 0.0, 0, 0 ]
@@ -83,7 +83,7 @@ anims/Active = SubResource( 2 )
 [node name="RayCast2D" type="RayCast2D" parent="."]
 position = Vector2( -36, 0 )
 enabled = true
-cast_to = Vector2( 0, 512 )
+cast_to = Vector2( 0, 1024 )
 collision_mask = 3103
 
 [node name="Position2D" type="Position2D" parent="RayCast2D"]
@@ -92,7 +92,7 @@ collision_mask = 3103
 
 [node name="Particles2D" type="Particles2D" parent="ContactPoint"]
 position = Vector2( -2, 0 )
-process_material = SubResource( 3 )
+process_material = SubResource( 5 )
 
 [node name="Particles2D2" type="Particles2D" parent="ContactPoint"]
 position = Vector2( 2, 0 )

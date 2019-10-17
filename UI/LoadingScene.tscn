@@ -17,12 +17,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer"]
-margin_left = 289.0
+margin_left = 259.0
 margin_top = 173.0
-margin_right = 350.0
+margin_right = 380.0
 margin_bottom = 187.0
 
 [node name="Label" type="Label" parent="CenterContainer/HBoxContainer"]
-margin_right = 61.0
+margin_right = 121.0
 margin_bottom = 14.0
-text = "Loading..."
+text = "Generating world..."

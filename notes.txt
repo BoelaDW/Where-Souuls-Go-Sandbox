@@ -25,7 +25,5 @@ Changes made
 
 Changes to make
 ---------------
-Implement time system
-Add Mega eagle
 City bells
 City bell warning popup

@@ -7,21 +7,24 @@ var worldGenSize = 100
 var klaraModeEnabled = false
 
 
+var eagleRightEnd
+
+
 var playerPos = Vector2()
 
 var playerHP = 100
 var playerPower = 100
 var playerCanMove = 1
 
-
+#Toolbar system
 var selectedToolbarTool = 0
+var toolbarSelectedBlock = 0
 
-
-
+#Block placement system
 var blockID = 0
 onready var blockDB = []
 
-
+#When a friendly gets angry
 var angryPos = Vector2()
 
 
@@ -29,7 +32,7 @@ var angryPos = Vector2()
 #Time system
 var baseRealTime = 0.0
 var currentGameTime = 0.0
-
+var processedGameTime = 0
 
 #Mega eagle system
 var bellsRinging = false
@@ -119,10 +122,10 @@ func checkCurrentTime():
 func _physics_process(delta):
 	
 	checkCurrentTime()
+	processedGameTime = currentGameTime * 400
 	
-	
-	
-	
+	if processedGameTime <= 50 and processedGameTime >= 45 and eagleComing == false:
+		eagleComing = true
 	
 	
 

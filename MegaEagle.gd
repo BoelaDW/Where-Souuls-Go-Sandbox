@@ -23,49 +23,49 @@ func _draw():
 	
 
 
+func moveRight():
+	
+	if global_position.x < 0:
+		dir = 1
 
 
+func moveLeft():
+	
+	if global_position.x > GLOBAL.worldGenSize * 16:
+		dir = -1
 
 
-
-
-
-
-
-
-
-
-
+func stopMoving():
+	
+	dir = 0
+	GLOBAL.eagleComing = false
+	
 
 func _physics_process(delta):
 	
 	
 	
-	if global_position.x <= -500:
+	if global_position.x <= -400:
 		
-		#If waiting for the signal to fly over
-		if GLOBAL.eagleComing and dir == 0:
-			dir = 1
+		if dir == -1:
+			stopMoving()
 			
 		
-		#If hitting this point coming from the right
-		if GLOBAL.eagleComing and dir == -1:
-			GLOBAL.eagleComing = false
-			dir = 0
-			print("STOPPED ON THE LEFT")
+		if dir == 0 and GLOBAL.eagleComing:
+			moveRight()
 			
 		
-	elif global_position.x >= GLOBAL.worldGenSize * 16 + 500:
-		#If waiting for the signal to fly over
-		if GLOBAL.eagleComing and dir == 0:
-			dir = -1
+		
+	elif global_position.x >= GLOBAL.worldGenSize * 16 + 400:
+		
+		
+		if dir == 1:
+			stopMoving()
 			
 		
-		#If hitting this point coming from the right
-		if GLOBAL.eagleComing and dir == 1:
-			GLOBAL.eagleComing = false
-			dir = 0
-			print("STOPPED ON THE RIGHT")
+		if dir == 0 and GLOBAL.eagleComing:
+			moveLeft()
+		
 	
 	
 	

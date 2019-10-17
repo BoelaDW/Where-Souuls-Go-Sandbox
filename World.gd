@@ -156,7 +156,6 @@ func spawnMegaEagle():
 	
 	var eagle = MEGA_EAGLE_SCENE.instance()
 	add_child(eagle)
-	eagle.dir = 1
 	eagle.global_position = Vector2(-512, -256)
 	
 	
@@ -187,7 +186,7 @@ func spawnFriendlies(baseLocation):
 		add_child(friendly)
 		friendly.global_position = Vector2(loc.x - 32,loc.y - 16)
 		amountOfFriendlies += 1
-		print(amountOfFriendlies)
+		
 	
 
 
