@@ -28,8 +28,8 @@ Wed 16 Oct:
    - We have time! Like.. a time system, one that seems to work for now
 
 Thu 17 Oct:
-    - Changed the Evil Mages' targeting system a little so it feels better
-    - Around midnight (In-game time) the Mega Eagle will do his thing
+   - Changed the Evil Mages' targeting system a little so it feels better
+   - Around midnight (In-game time) the Mega Eagle will do his thing
     
 
 
