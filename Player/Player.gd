@@ -37,6 +37,7 @@ func _ready():
 	$PowerRegenTimer.start()
 	add_to_group("Player")
 	$AnimationPlayer.play("Active")
+	
 
 
 func getInput():

@@ -10,6 +10,7 @@ onready var BLOCK_2_CORNER_SCENE = 	preload("res://Blocks/Block2Corner.tscn")
 onready var BLOCK_2_BACKGROUND = 	preload("res://Blocks/Block2Background.tscn")
 onready var BLOCK_3_SCENE = 		preload("res://Blocks/Block3.tscn") #Wooden blocks
 onready var BLOCK_3_CORNER_SCENE = 	preload("res://Blocks/Block3Corner.tscn")
+onready var BLOCK_3_BACKGROUND = 	preload("res://Blocks/Block3Background.tscn")
 
 #Building related scenes
 onready var BUILDING_BASE_SCENE = 	preload("res://Buildings/BuildingBase.tscn")
@@ -28,6 +29,16 @@ onready var ENEMY_1_SCENE = 		preload("res://NPCs/BasicEnemy.tscn")
 onready var FRIENDLY_SCENE = 		preload("res://NPCs/Friendly/Friendly.tscn")
 onready var EVIL_MAGE_SCENE = 		preload("res://NPCs/EvilMage/EvilMage.tscn")
 onready var MEGA_EAGLE_SCENE = 		preload("res://NPCs/MegaEagle.tscn")
+
+
+#Debugging block placement
+onready var DEBUG_DOT_SCENE = 		preload("res://Debug/DebugDot.tscn")
+
+
+#Different placed block hp
+var fortressBrickHp = 5
+var fortressWoodHp = 2
+
 
 
 #This valuse will be set via the world gen menu
@@ -61,6 +72,7 @@ func _ready():
 	
 	#This generates the world we will play in
 	buildWorld()
+	
 
 
 func _input(event):
@@ -68,6 +80,44 @@ func _input(event):
 	if Input.is_action_just_pressed("ui_cancel"):
 		GLOBAL.goto_scene("res://WorldGenerateMenu.tscn")
 		
+		
+	
+	if Input.is_action_just_pressed("8") and GLOBAL.blockPlacementDebug:
+		debugBlockPlacement()
+	
+	if Input.is_action_just_pressed("7") and GLOBAL.blockPlacementDebug:
+		get_node("/root/World/DebugDot").queue_free()
+
+
+
+
+
+func debugBlockPlacement():
+	var dotBase = DEBUG_DOT_SCENE.instance()
+	add_child(dotBase)
+	dotBase.global_position = Vector2(0,0)
+	for i in GLOBAL.blockDB:
+		
+		var dot = DEBUG_DOT_SCENE.instance()
+		dotBase.add_child(dot)
+		dot.global_position = i
+		print(dot.get_path())
+		
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
 
 
 #Main Function for generating the world
@@ -78,14 +128,13 @@ func buildWorld():
 	addBuildings()
 	addDecorations()
 	spawnPlayer()
-	spawnMegaEagle()
+	
 	#Friendlies are now spawned with buildings
 	
 	#Klara mode turns all skeletons and stuff off
 	if not GLOBAL.klaraModeEnabled:
-		spawnEnemies()
-
-
+		#spawnEnemies()
+		spawnMegaEagle()
 
 
 #Just generates the basic floor of the world
@@ -127,7 +176,7 @@ func addBuildings():
 				amountOfBuildings += 1
 			
 		elif blockX > (worldWidth * 16) - (leftAndRightBufferSize + 16) and blockX < (worldWidth*16) - leftAndRightBufferSize / 2:
-			if spawnFortress and not fortressSpawned:
+			if not GLOBAL.klaraModeEnabled and spawnFortress and not fortressSpawned:
 				fortressSpawned = true
 				lastBuildingPos = Vector2(blockX,blockY)
 				generateFortress(blockX,blockY)
@@ -177,6 +226,7 @@ func spawnFriendlies(baseLocation):
 	
 	if amountOfFriendlies < (worldWidth / 50):
 		var friendly = FRIENDLY_SCENE.instance()
+		friendly.housePos = loc
 		var randDir = rand_range(-5,5)
 		if randDir < 0:
 			randDir = -1
@@ -239,19 +289,21 @@ func generateFortress(baseX, baseY):
 		
 		
 		for column in range(houseWidth):
-			#Left of house
+			#Left of fort
 			if column == 0:
 				var block = BLOCK_2_SCENE.instance()
-				block.blockHp = 3
+				block.blockHp = fortressBrickHp
+				block.blockIsCorner = true
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
 				
-			#Right of house
+			#Right of fort
 			elif column == houseWidth - 1:
 				var block = BLOCK_2_SCENE.instance()
-				block.blockHp = 3
+				block.blockHp = fortressBrickHp
 				block.flippedH = true
+				block.blockIsCorner = true
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
@@ -262,6 +314,7 @@ func generateFortress(baseX, baseY):
 				#Floors
 				if buildingBlockY == lastFloorY - (16 * 4) and floorsPlaced < numberOfFLoors and not column == (houseWidth / 2) and not column == (houseWidth / 2 - 1):
 					var block = BLOCK_3_SCENE.instance()
+					block.blockHp = fortressWoodHp
 					buildingBase.add_child(block)
 					block.global_position = Vector2(buildingBlockX,buildingBlockY)
 					if column == houseWidth - 2:
@@ -316,7 +369,7 @@ func generateFortress(baseX, baseY):
 		#Left corner
 		if column == 0:
 			var block = BLOCK_2_SCENE.instance()
-			block.blockHp = 3
+			block.blockHp = fortressBrickHp
 			block.flippedH = true
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
@@ -325,7 +378,7 @@ func generateFortress(baseX, baseY):
 		#Right corner
 		elif column == houseWidth - 1:
 			var block = BLOCK_2_SCENE.instance()
-			block.blockHp = 3
+			block.blockHp = fortressBrickHp
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
 			block.addToDB()
@@ -333,7 +386,7 @@ func generateFortress(baseX, baseY):
 		else:
 			if column != 6 and column != 7:
 				var block = BLOCK_2_SCENE.instance()
-				block.blockHp = 3
+				block.blockHp = fortressBrickHp
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
@@ -399,6 +452,8 @@ func generateStructure(baseX,baseY):
 	var buildingBlockX = bbBaseX
 	var buildingBlockY = bbBaseY
 	
+	
+	
 	var buildingBase = BUILDING_BASE_SCENE.instance()
 	add_child(buildingBase)
 	buildingBase.global_position = Vector2(baseX,baseY)
@@ -406,21 +461,28 @@ func generateStructure(baseX,baseY):
 	#Random Size
 	var houseWidth = rand_range(6,15)
 	houseWidth = int(houseWidth)
-	var houseHeight = rand_range(3, 10)
-	houseHeight = int(houseHeight)
+	var houseHeight = int(rand_range(1, 4)) * 4
+	houseHeight = int(houseHeight) - 1
+	
+	var numberOfFLoors = int(houseHeight / 4)
+	var lastFloorY = baseY
+	var floorsPlaced = 0
+	
+	
 	
 	#Generate base of building.
 	for row in range(houseHeight):
 		for column in range(houseWidth):
 			#Left of house
-			if column == 0:
+			if column == 0 and not row == 0:
 				var block = BLOCK_3_CORNER_SCENE.instance()
+				
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
 				pass
 			#Right of house
-			elif column == houseWidth - 1:
+			elif column == houseWidth - 1 and not row == 0:
 				var block = BLOCK_3_CORNER_SCENE.instance()
 				block.flippedH = true
 				buildingBase.add_child(block)
@@ -429,19 +491,22 @@ func generateStructure(baseX,baseY):
 				pass
 			#all the normal blocks
 			else:
-				var block = BLOCK_3_SCENE.instance()
-				buildingBase.add_child(block)
-				block.global_position.x = buildingBlockX
-				block.global_position.y = buildingBlockY
-				block.addToDB()
+				#Floors
+				if buildingBlockY == lastFloorY - (16 * 4) and floorsPlaced < numberOfFLoors and not column == 1 and not column == 2:
+					var block = BLOCK_3_SCENE.instance()
+					buildingBase.add_child(block)
+					block.global_position = Vector2(buildingBlockX,buildingBlockY)
+					if column == houseWidth - 2:
+						lastFloorY = buildingBlockY
+					block.addToDB()
+					numberOfFLoors += 1
+				else:
+					#Adding Background
+					var block = BLOCK_3_BACKGROUND.instance()
+					buildingBase.add_child(block)
+					block.global_position = Vector2(buildingBlockX,buildingBlockY)
+					
 				
-			#adds one door to each building
-			if column == houseWidth/3 and hasDoor == false:
-				var door = BUILDING_DOOR.instance()
-				buildingBase.add_child(door)
-				door.global_position = Vector2(buildingBlockX,buildingBlockY)
-				hasDoor = true
-			
 			
 			
 			buildingBlockX += 16
@@ -451,6 +516,7 @@ func generateStructure(baseX,baseY):
 	for column in range(houseWidth):
 		if column == 0:
 			var block = BLOCK_2_CORNER_SCENE.instance()
+			block.blockIsCorner = true
 			block.flippedH = true
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
@@ -459,6 +525,7 @@ func generateStructure(baseX,baseY):
 			
 		elif column == houseWidth - 1:
 			var block = BLOCK_2_CORNER_SCENE.instance()
+			block.blockIsCorner = true
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
 			block.addToDB()

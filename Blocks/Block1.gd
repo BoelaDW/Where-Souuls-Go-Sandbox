@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends StaticBody2D
 class_name Block
 
 
@@ -12,6 +12,10 @@ var canBreak = true
 var blockHp = 1
 
 
+var blockIsCorner = false
+var cornerShape = []
+
+
 var blockId = 0
 
 onready var EXPLODE_SCENE = preload("res://Effects/ProjectileHitEffect.tscn")
@@ -19,8 +23,23 @@ onready var EXPLODE_SCENE = preload("res://Effects/ProjectileHitEffect.tscn")
 
 func _ready():
 	$Sprite.flip_h = flippedH
-	#Hopefully this can be used to set them back to rigidBodies at some point
-	set_mode(RigidBody2D.MODE_STATIC)
+	
+	
+	if blockIsCorner:
+		if flippedH:
+			cornerShape = [Vector2(8,-8),Vector2(8,8),Vector2(-8,8)]
+		else:
+			cornerShape = [Vector2(-8,-8),Vector2(8,8),Vector2(-8,8)]
+		
+		
+		
+		
+		var cornerCollisionShape = ConvexPolygonShape2D.new()
+		cornerCollisionShape.points = PoolVector2Array(cornerShape)
+		$CollisionShape2D.shape = cornerCollisionShape
+	
+	
+	
 
 func destroy(dmg = 1,canBreakBlocks = true):
 	if canBreakBlocks:
@@ -58,9 +77,7 @@ func explode():
 
 func _on_VisibilityNotifier2D_screen_entered():
 	$Sprite.visible = true
-	$CollisionShape2D.disabled = false
 
 
 func _on_VisibilityNotifier2D_screen_exited():
 	$Sprite.visible = false
-	$CollisionShape2D.disabled = true

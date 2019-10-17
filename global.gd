@@ -37,6 +37,10 @@ var processedGameTime = 0
 #Mega eagle system
 var bellsRinging = false
 var eagleComing = false
+
+
+#Block Placement Debug System
+var blockPlacementDebug = false
 #----------------------------------------------
 
 onready var LOADING_SCREEN = preload("res://UI/LoadingScene.tscn")

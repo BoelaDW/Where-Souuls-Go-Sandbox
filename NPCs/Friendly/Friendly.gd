@@ -9,6 +9,7 @@ const FLOOR = Vector2(0,-1)
 var wandering = false
 var stopping = false
 var notSoFriendly = false
+var runningHome = false
 
 var angerLevel = 0
 var hp = 50
@@ -25,12 +26,15 @@ var dir = 1
 var velocity = Vector2()
 
 
+var housePos = Vector2()
+
 
 
 func _ready():
 	wandering = true
 	$AnimationPlayer.play("Active")
 	$AngerTimer.start()
+	housePos = Vector2(housePos.x + 64, housePos.y)
 
 
 
@@ -44,20 +48,34 @@ func _physics_process(delta):
 			timerStarted = true
 			$WanderTimer.start(rand_range(5,10))
 		
-		if angerLevel > 10:
-			notSoFriendly = true
+		
+		if GLOBAL.eagleComing:
+			runningHome = true
+			
 			wandering = false
 			stopping = false
-			MOVE_SPEED = 150
-			$Eyes.frame = 12
-		else:
-			$Eyes.frame = 10
-			MOVE_SPEED = 40
 			notSoFriendly = false
-			wandering = true
-			stopping = false
-		
-		
+			
+			$Eyes.frame = 10
+			
+			
+			
+		else:
+			if angerLevel > 10:
+				notSoFriendly = true
+				wandering = false
+				stopping = false
+				MOVE_SPEED = 150
+				$Eyes.frame = 12
+			else:
+				$Eyes.frame = 10
+				MOVE_SPEED = 40
+				notSoFriendly = false
+				wandering = true
+				stopping = false
+			
+			runningHome = false
+			
 		
 		
 		
@@ -77,12 +95,7 @@ func _physics_process(delta):
 		
 		
 		
-		if GLOBAL.checkCanMoveLeft(global_position.x) and GLOBAL.checkCanMoveRight(global_position.x):
-			pass
-		else:
-			dir *= -1
 		
-		velocity.x = MOVE_SPEED * dir
 		
 		
 		if not is_on_floor():
@@ -120,14 +133,47 @@ func _physics_process(delta):
 					if is_on_floor():
 						velocity.y = -300
 					
-					
-					
-					
 				
 				
 				
+				
+		elif runningHome:
+			
+			
+			
+			if housePos.x - 6 > self.global_position.x:
+				dir = 1
+			
+			if housePos.x + 6 < self.global_position.x:
+				dir = -1
+			
+			if self.global_position.x < housePos.x + 32 and self.global_position.x > housePos.x -32:
+				MOVE_SPEED = 20
+			else:
+				if $RCLeft.is_colliding() and $RCJumpableLeft.is_colliding() or $RCRight.is_colliding() and $RCJumpableRight.is_colliding():
+					if is_on_floor():
+						velocity.y = -300
+				
+				MOVE_SPEED = 150
+			
+			
+			
+			
+			
+			
+			
+			
 			
 		
+		
+		
+		
+		if GLOBAL.checkCanMoveLeft(global_position.x) and GLOBAL.checkCanMoveRight(global_position.x):
+			pass
+		else:
+			dir *= -1
+		
+		velocity.x = MOVE_SPEED * dir
 		
 		
 		velocity = move_and_slide(velocity,FLOOR)
@@ -156,10 +202,12 @@ func _on_WanderTimer_timeout():
 
 func _on_VisibilityNotifier2D_screen_exited():
 	onScreen = false
+	set_physics_process(false)
 
 
 func _on_VisibilityNotifier2D_screen_entered():
 	onScreen = true
+	set_physics_process(true)
 
 
 func _on_AngerTimer_timeout():

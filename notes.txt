@@ -22,7 +22,14 @@ Changes made
 		- There is now a time system with 15 minute days
 		- Mega Eagle!! He sweeps over the world and kills everyone with his laser
 		
-
+	
+	Fri 18 Oct:
+		- Changed blocks from RigidBody to StaticBody for performance
+		- Done a few other performance optimizations
+		- Houses now look different
+		- Corner blocks have a different collision shape
+		- Friendlies now run home to hide when Eagle is coming
+		
 Changes to make
 ---------------
 City bells

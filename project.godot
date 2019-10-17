@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "RigidBody2D",
+"base": "StaticBody2D",
 "class": "Block",
 "language": "GDScript",
 "path": "res://Blocks/Block1.gd"
