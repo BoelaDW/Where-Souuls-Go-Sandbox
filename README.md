@@ -27,11 +27,16 @@ Wed 16 Oct:
    - Mega Eagle!! It's a menace that sweeps across the world, killing everything with its laser beam.
    - We have time! Like.. a time system, one that seems to work for now
 
+Thu 17 Oct:
+    - Changed the Evil Mages' targeting system a little so it feels better
+    - Around midnight (In-game time) the Mega Eagle will do his thing
+    
 
 
 
 
-Features that will probably be added:
+
+Features that will probably be added in the future:
    - More blocks to build with
    - Trees and other plants
    - Some in-game currency
