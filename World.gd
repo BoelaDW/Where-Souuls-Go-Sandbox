@@ -29,6 +29,8 @@ onready var ENEMY_1_SCENE = 		preload("res://NPCs/BasicEnemy.tscn")
 onready var FRIENDLY_SCENE = 		preload("res://NPCs/Friendly/Friendly.tscn")
 onready var EVIL_MAGE_SCENE = 		preload("res://NPCs/EvilMage/EvilMage.tscn")
 onready var MEGA_EAGLE_SCENE = 		preload("res://NPCs/MegaEagle.tscn")
+onready var EVIL_BUILDER_SCENE = 	preload("res://NPCs/EvilBuilder/EvilBuilder.tscn")
+onready var ALBERT_BONES_SCENE = 	preload("res://NPCs/BonesTrio/Albert.tscn")
 
 
 #Debugging block placement
@@ -101,7 +103,6 @@ func debugBlockPlacement():
 		var dot = DEBUG_DOT_SCENE.instance()
 		dotBase.add_child(dot)
 		dot.global_position = i
-		print(dot.get_path())
 		
 	
 	
@@ -293,7 +294,6 @@ func generateFortress(baseX, baseY):
 			if column == 0:
 				var block = BLOCK_2_SCENE.instance()
 				block.blockHp = fortressBrickHp
-				block.blockIsCorner = true
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
@@ -303,7 +303,6 @@ func generateFortress(baseX, baseY):
 				var block = BLOCK_2_SCENE.instance()
 				block.blockHp = fortressBrickHp
 				block.flippedH = true
-				block.blockIsCorner = true
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
@@ -332,7 +331,7 @@ func generateFortress(baseX, baseY):
 					
 					
 					#Spawning mages inside
-					var randomizeMageSpawn = int(rand_range(-10,10))
+					var randomizeMageSpawn = int(rand_range(-5,10))
 					
 					
 					if randomizeMageSpawn > 0 and (column == 4 and buildingBlockY == lastFloorY - (16) and row > houseHeight / 2) or  randomizeMageSpawn > 0 and (column == houseWidth - 2 and buildingBlockY == lastFloorY - (16 * 2) and row > houseHeight / 3):
@@ -341,7 +340,15 @@ func generateFortress(baseX, baseY):
 						get_parent().add_child(mage)
 						mage.global_position = Vector2(buildingBlockX,buildingBlockY)
 						
-					elif (column == houseWidth - 4 and row == 4):
+					elif randomizeMageSpawn < 0 and (column == 4 and buildingBlockY == lastFloorY - (16) and row > houseHeight / 2) or  randomizeMageSpawn > 0 and (column == houseWidth - 2 and buildingBlockY == lastFloorY - (16 * 2) and row > houseHeight / 3):
+						var builder = EVIL_BUILDER_SCENE.instance()
+						get_parent().add_child(builder)
+						builder.global_position = Vector2(buildingBlockX,buildingBlockY)
+						
+						
+						
+					
+					if (column == houseWidth - 4 and row == 4):
 						
 						var campfire = CAMPFIRE_SCENE.instance()
 						
@@ -423,6 +430,15 @@ func generateFortress(baseX, baseY):
 			block.global_position = Vector2(buildingBlockX + 16,buildingBlockY)
 			block.addToDB()
 		#All other blocks
+		elif column == houseWidth - 6:
+			var albertScene = ALBERT_BONES_SCENE.instance()
+			add_child(albertScene)
+			albertScene.global_position = Vector2(buildingBlockX, buildingBlockY + 16)
+			
+			
+			
+			
+			
 		else:
 			pass
 			

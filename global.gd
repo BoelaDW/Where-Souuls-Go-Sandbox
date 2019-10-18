@@ -27,7 +27,8 @@ onready var blockDB = []
 #When a friendly gets angry
 var angryPos = Vector2()
 
-
+#Player node path
+var playerPath = ""
 
 #Time system
 var baseRealTime = 0.0
