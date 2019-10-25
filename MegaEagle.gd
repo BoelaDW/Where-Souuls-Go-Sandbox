@@ -1,8 +1,12 @@
 extends KinematicBody2D
+class_name MegaEagle
+
 
 const MOVE_SPEED = 50
 
 var dir = 0
+
+var hp = 500
 
 var velocity = Vector2()
 
@@ -19,6 +23,16 @@ func _draw():
 	draw_colored_polygon (points, color)
 	
 	
+	
+	
+
+
+func destroy(dmg = 5):
+	hp -= dmg
+	if hp <= 0:
+		queue_free()
+		
+		
 	
 	
 

@@ -46,9 +46,9 @@ margin_top = 28.0
 margin_right = 286.0
 margin_bottom = 62.0
 theme = SubResource( 1 )
-min_value = 10.0
+min_value = 500.0
 max_value = 1e+07
-value = 100.0
+value = 500.0
 align = 1
 
 [node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
@@ -64,6 +64,7 @@ margin_right = 286.0
 margin_bottom = 128.0
 theme = SubResource( 2 )
 max_value = 1e+08
+value = 12.0
 align = 1
 
 [node name="CBKlaraMode" type="CheckButton" parent="MarginContainer/HBoxContainer/VBoxContainer"]

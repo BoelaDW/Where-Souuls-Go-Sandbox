@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Effects/ProjectileHitEffect.gd" type="Script" id=1]
 [ext_resource path="res://Sounds/2.wav" type="AudioStream" id=2]
@@ -11,13 +11,7 @@ colors = PoolColorArray( 0, 1, 0.813559, 1, 1, 1, 1, 1 )
 [sub_resource type="GradientTexture" id=2]
 gradient = SubResource( 1 )
 
-[sub_resource type="Curve" id=3]
-_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0.1612 ), 0.0, 0.0, 0, 0 ]
-
-[sub_resource type="CurveTexture" id=4]
-curve = SubResource( 3 )
-
-[sub_resource type="ParticlesMaterial" id=5]
+[sub_resource type="ParticlesMaterial" id=3]
 emission_shape = 1
 emission_sphere_radius = 2.0
 flag_disable_z = true
@@ -31,9 +25,8 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 linear_accel = 15.8
 linear_accel_random = 0.28
-scale = 10.0
+scale = 4.0
 scale_random = 1.0
-scale_curve = SubResource( 4 )
 color_ramp = SubResource( 2 )
 
 [node name="ProjectileHitEffect" type="Node2D"]
@@ -54,13 +47,13 @@ color = Color( 0.364706, 0.596078, 0.552941, 1 )
 
 [node name="Particles2D" type="Particles2D" parent="."]
 emitting = false
-amount = 64
+amount = 80
 lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
 randomness = 1.0
 local_coords = false
-process_material = SubResource( 5 )
+process_material = SubResource( 3 )
 
 [node name="LightOffTimer" type="Timer" parent="."]
 wait_time = 0.05

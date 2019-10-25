@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Albert",
+"language": "GDScript",
+"path": "res://NPCs/BonesTrio/Albert.gd"
+}, {
 "base": "StaticBody2D",
 "class": "Block",
 "language": "GDScript",
@@ -44,12 +49,23 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://NPCs/Friendly/Friendly.gd"
 }, {
+"base": "Area2D",
+"class": "Ladder",
+"language": "GDScript",
+"path": "res://Blocks/LadderBlock.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "MegaEagle",
+"language": "GDScript",
+"path": "res://MegaEagle.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://Player/Player.gd"
 } ]
 _global_script_class_icons={
+"Albert": "",
 "Block": "",
 "BreakableDoor": "",
 "BuildingDoor": "",
@@ -57,6 +73,8 @@ _global_script_class_icons={
 "EvilBuilder": "",
 "EvilMage": "",
 "Friendly": "",
+"Ladder": "",
+"MegaEagle": "",
 "Player": ""
 }
 

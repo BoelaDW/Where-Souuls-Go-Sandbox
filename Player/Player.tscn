@@ -5,8 +5,8 @@
 [ext_resource path="res://UI/GUI.tscn" type="PackedScene" id=3]
 [ext_resource path="res://UI/DummyBlock.tscn" type="PackedScene" id=4]
 
-[sub_resource type="CircleShape2D" id=1]
-radius = 6.0
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6, 6 )
 
 [sub_resource type="Gradient" id=2]
 offsets = PoolRealArray( 0.210526, 1 )

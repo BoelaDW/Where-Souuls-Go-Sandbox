@@ -45,12 +45,12 @@ func _physics_process(delta):
 
 
 func _on_Area2D_body_entered(body):
-	if body is Block or body is Enemy or body is BuildingDoor or body is Friendly or body is EvilMage:
+	if body.has_method("destroy"):
 		body.destroy()
 		var hitEffect = HIT_EFFECT_SCENE.instance()
 		get_parent().add_child(hitEffect)
 		hitEffect.global_position = self.global_position
-		
+		get_node(GLOBAL.playerPath).shakeCamera()
 		
 		queue_free()
 	
