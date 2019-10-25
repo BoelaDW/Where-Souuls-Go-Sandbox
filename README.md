@@ -37,17 +37,17 @@ Fri 18 Oct:
    - Corner block collision shapes aren't square anymore
    - Friendlies now run home when the Mega Eagle is coming
 
+Fri 25 Oct:
+   - Terrain generation was changed
+   - Ladders were added
+   - Some more little performance improvements
+   
 
 
 
 
-Features that will probably be added in the future:
-   - More blocks to build with
-   - Trees and other plants
-   - Some in-game currency
-   - Being able to buy things from NPCs
-   - Housing for "friendlies"
-   - The ability to dig down (Generate ground)
-   - Pets
-   - Bodies to posess (*Since you are a little ghost*)
-   - Quests
+****I've decided to restart the whole project, since I've run into issues with how the project is set up***
+
+
+
+
