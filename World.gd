@@ -11,6 +11,7 @@ onready var BLOCK_2_BACKGROUND = 	preload("res://Blocks/Block2Background.tscn")
 onready var BLOCK_3_SCENE = 		preload("res://Blocks/Block3.tscn") #Wooden blocks
 onready var BLOCK_3_CORNER_SCENE = 	preload("res://Blocks/Block3Corner.tscn")
 onready var BLOCK_3_BACKGROUND = 	preload("res://Blocks/Block3Background.tscn")
+onready var LADDER_BLOCK = 			preload("res://Blocks/LadderBlock.tscn")#Ladder
 
 #Building related scenes
 onready var BUILDING_BASE_SCENE = 	preload("res://Buildings/BuildingBase.tscn")
@@ -62,13 +63,9 @@ var amountOfBuildings = 0
 func _ready():
 	#Seed for world generation
 	seed(worldSeed)
-	
-	#This is to determine if a fortress should be spawned
-	var spawnFortressProbability = rand_range(-10,10)
-	if spawnFortressProbability > -10:
-		spawnFortress = true
-	else:
-		spawnFortress = false
+	worldWidth = stepify(worldWidth,16)
+	print(worldWidth)
+	spawnFortress = true
 	
 	blockY = stepify(get_viewport_rect().size.y - 16,16)
 	
@@ -106,8 +103,6 @@ func debugBlockPlacement():
 		
 	
 	
-	
-	
 
 
 
@@ -126,6 +121,7 @@ func buildWorld():
 	
 	blockX = 0
 	buildFloor()
+	buildTerrain()
 	addBuildings()
 	addDecorations()
 	spawnPlayer()
@@ -152,7 +148,103 @@ func buildFloor():
 		block1.global_position.y = blockY
 		blockX += block1.blockWidth
 		block1.addToDB()
+		
+		
+	blockY -= 16
+
+#This will generate hills and other things for the terrain
+func buildTerrain():
 	
+	var baseBlockY = blockY
+	var baseBlockX = blockX
+	
+	blockX = 0
+	
+	
+	var chunkSize = int(worldWidth / 16)
+	var terrainHeight = int(rand_range(5,10))
+	
+	var minTerrainHeight = terrainHeight - 5
+	var maxTerrainHeight = terrainHeight + 5
+	
+	
+	var lastBlockX = 0
+	
+	
+	
+	
+	
+	for column in range(worldWidth):
+		
+		if blockX >= lastBlockX + 64:
+			if terrainHeight <= minTerrainHeight:
+				terrainHeight += 1
+			elif terrainHeight >= maxTerrainHeight:
+				terrainHeight -= 1
+			else:
+				terrainHeight += int(rand_range(-2,2))
+			lastBlockX = blockX
+		
+		
+		
+		
+		
+		
+		
+		for row in range(terrainHeight):
+			
+			if not GLOBAL.blockDB.has(Vector2(blockX,blockY)):
+				var block = BLOCK_2_SCENE.instance()
+				add_child(block)
+				
+				block.global_position = Vector2(blockX,blockY)
+				block.addToDB()
+				
+				
+			blockY = stepify(blockY,16)
+			
+			
+			blockY -= 16
+		
+		blockY = baseBlockY
+		blockX += 16
+	blockX = 0
+	
+	
+	blockY = baseBlockY - 64
+
+
+
+func generateCaves(caveBaseX = 0, caveBaseY = 0):
+	
+	var caveHeight = int(rand_range(3,5))
+	var caveWidth = int(rand_range(3,7))
+	
+	var caveBlockX = caveBaseX
+	var caveBlockY = caveBaseY - 16
+	
+	
+	var cave = [Vector2()]
+	
+	for row in range(caveHeight):
+		for column in range(caveWidth):
+			
+			cave[1] = Vector2(caveBlockX,caveBlockY) 
+			
+			caveBlockX += 16
+		caveBlockY -= 16
+		caveBlockX = caveBaseX
+	
+	for block in cave:
+		GLOBAL.blockDB.insert(GLOBAL.blockDB.size(),Vector2(caveBlockX,caveBlockY))
+		
+	
+	#var pos = Vector2(stepify(self.global_position.x,16), stepify(self.global_position.y,16))
+	#GLOBAL.blockDB.insert(GLOBAL.blockDB.size(),pos)
+	#blockId = pos
+	
+	
+
 
 
 
@@ -310,7 +402,20 @@ func generateFortress(baseX, baseY):
 				
 			#all the normal blocks
 			else:
-				#Floors
+				
+				if not GLOBAL.blockDB.has(Vector2(buildingBlockX,buildingBlockY)) and  column == (houseWidth / 2) or  not GLOBAL.blockDB.has(Vector2(buildingBlockX,buildingBlockY)) and column == (houseWidth / 2 - 1):
+					var ladder = LADDER_BLOCK.instance()
+					buildingBase.add_child(ladder)
+					ladder.global_position = Vector2(buildingBlockX,buildingBlockY)
+					ladder.addToDB()
+					
+					
+					
+				
+				
+				
+				
+				
 				if buildingBlockY == lastFloorY - (16 * 4) and floorsPlaced < numberOfFLoors and not column == (houseWidth / 2) and not column == (houseWidth / 2 - 1):
 					var block = BLOCK_3_SCENE.instance()
 					block.blockHp = fortressWoodHp
@@ -489,8 +594,9 @@ func generateStructure(baseX,baseY):
 	#Generate base of building.
 	for row in range(houseHeight):
 		for column in range(houseWidth):
+			
 			#Left of house
-			if column == 0 and not row == 0:
+			if not GLOBAL.blockDB.has(Vector2(buildingBlockX,buildingBlockY)) and  column == 0 and not row == 0:
 				var block = BLOCK_3_CORNER_SCENE.instance()
 				
 				buildingBase.add_child(block)
@@ -498,7 +604,7 @@ func generateStructure(baseX,baseY):
 				block.addToDB()
 				pass
 			#Right of house
-			elif column == houseWidth - 1 and not row == 0:
+			elif not GLOBAL.blockDB.has(Vector2(buildingBlockX,buildingBlockY)) and  column == houseWidth - 1 and not row == 0:
 				var block = BLOCK_3_CORNER_SCENE.instance()
 				block.flippedH = true
 				buildingBase.add_child(block)
@@ -508,7 +614,7 @@ func generateStructure(baseX,baseY):
 			#all the normal blocks
 			else:
 				#Floors
-				if buildingBlockY == lastFloorY - (16 * 4) and floorsPlaced < numberOfFLoors and not column == 1 and not column == 2:
+				if (not GLOBAL.blockDB.has(Vector2(buildingBlockX,buildingBlockY)) and buildingBlockY == lastFloorY - (16 * 4) and floorsPlaced < numberOfFLoors) and not column == 1 and not column == 2:
 					var block = BLOCK_3_SCENE.instance()
 					buildingBase.add_child(block)
 					block.global_position = Vector2(buildingBlockX,buildingBlockY)

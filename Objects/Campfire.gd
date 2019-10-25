@@ -13,7 +13,9 @@ func _on_HealTimer_timeout():
 			if body is Player:
 				
 				body.heal()
-			
+			if body is Block:
+				
+				body.destroy(100)
 			
 		
 		

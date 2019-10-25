@@ -63,9 +63,9 @@ func addToDB():
 	
 
 func explode():
-	var explosion = EXPLODE_SCENE.instance()
-	get_parent().add_child(explosion)
-	explosion.global_position = self.global_position
+	#var explosion = EXPLODE_SCENE.instance()
+	#get_parent().add_child(explosion)
+	#explosion.global_position = self.global_position
 	
 	
 	

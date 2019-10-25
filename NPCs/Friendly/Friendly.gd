@@ -12,7 +12,7 @@ var notSoFriendly = false
 var runningHome = false
 
 var angerLevel = 0
-var hp = 50
+var hp = 10
 
 
 var onScreen = false
@@ -61,7 +61,7 @@ func _physics_process(delta):
 			
 			
 		else:
-			if angerLevel > 10:
+			if angerLevel > 2:
 				notSoFriendly = true
 				wandering = false
 				stopping = false

@@ -17,7 +17,7 @@ var velocity = Vector2()
 var wandering = false
 
 onready var EXPLODE_EFFECT = preload("res://Effects/BuilderBombEffect.tscn")
-
+onready var BLOCK_SCENE = preload("res://Blocks/Block2.tscn")
 
 func _ready():
 	pass
@@ -107,11 +107,11 @@ func explode():
 		for body in $Area2D.get_overlapping_bodies():
 			if body is Player or body is Block or body is EvilMage or body is Friendly:
 				
-				body.destroy()
+				body.destroy(80)
 				
 			
 			
-	get_node(GLOBAL.playerPath).shakeCamera(100)
+	get_node(GLOBAL.playerPath).shakeCamera(10)
 	
 	var explodeEffect = EXPLODE_EFFECT.instance()
 	get_parent().add_child(explodeEffect)
@@ -127,10 +127,23 @@ func explode():
 
 func placeBlock():
 	
+	var blockNewPos = Vector2(stepify($BlockPlacePosition.global_position.x,16), stepify($BlockPlacePosition.global_position.y,16))
+	var block1NewPos = Vector2(stepify($BlockPlacePosition.global_position.x,16), stepify($BlockPlacePosition.global_position.y -16,16))
 	
-	print("PLACE BLOCK")
 	
-	pass
+	if GLOBAL.blockDB.has(blockNewPos):
+		pass
+	else:
+		var blockToPlace = BLOCK_SCENE.instance()
+		get_parent().add_child(blockToPlace)
+		blockToPlace.global_position = blockNewPos
+		blockToPlace.addToDB()
+		
+		var blockToPlace1 = BLOCK_SCENE.instance()
+		get_parent().add_child(blockToPlace1)
+		blockToPlace1.global_position = block1NewPos
+		blockToPlace1.addToDB()
+	
 	
 
 

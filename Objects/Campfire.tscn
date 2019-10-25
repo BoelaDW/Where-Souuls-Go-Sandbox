@@ -5,7 +5,7 @@
 [ext_resource path="res://Effects/light.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 32, 16 )
+extents = Vector2( 32, 13 )
 
 [sub_resource type="Animation" id=2]
 length = 2.0

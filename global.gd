@@ -1,5 +1,9 @@
 extends Node
 
+
+
+
+
 #----------------------------------------------
 #GLOBAL VARIABLES GO HERE
 var worldGenSeed = 0
@@ -19,6 +23,13 @@ var playerCanMove = 1
 #Toolbar system
 var selectedToolbarTool = 0
 var toolbarSelectedBlock = 0
+
+
+var bones = 0
+var blocksToPlace = 0
+
+
+
 
 #Block placement system
 var blockID = 0
