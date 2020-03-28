@@ -41,12 +41,14 @@ Fri 25 Oct:
    - Terrain generation was changed
    - Ladders were added
    - Some more little performance improvements
-   
+
+Sat 28 Mar 2020:
+   - Fixed some of the problems in the world generation (still not done though)
 
 
 
 
-****I've decided to restart the whole project, since I've run into issues with how the project is set up***
+****I've decided to pick up this project again since I have heaps of free time and no work, all thanks to Corona :/***
 
 
 
