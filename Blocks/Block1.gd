@@ -7,6 +7,10 @@ const blockExtents = 8
 var blockWidth = blockExtents * 2
 var flippedH = false
 var flippedV = false
+
+
+
+var canBeCleared = true
 var canBreak = true
 
 var blockHp = 1

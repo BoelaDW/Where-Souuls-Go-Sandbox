@@ -16,6 +16,10 @@ onready var LADDER_BLOCK = 			preload("res://Blocks/LadderBlock.tscn")#Ladder
 #Building related scenes
 onready var BUILDING_BASE_SCENE = 	preload("res://Buildings/BuildingBase.tscn")
 onready var BUILDING_DOOR = 		preload("res://Buildings/BuildingDoor.tscn")
+onready var BUILDING_BLOCK_CLEAR = 	preload("res://Buildings/ClearBlockArea.tscn")#This is for clearing blocks around buildings
+
+
+
 
 #Player scene, if that wasn't obvious
 onready var PLAYER_SCENE = 			preload("res://Player/Player.tscn")
@@ -84,8 +88,6 @@ func _input(event):
 	if Input.is_action_just_pressed("8") and GLOBAL.blockPlacementDebug:
 		debugBlockPlacement()
 	
-	if Input.is_action_just_pressed("7") and GLOBAL.blockPlacementDebug:
-		get_node("/root/World/DebugDot").queue_free()
 
 
 
@@ -120,11 +122,12 @@ func debugBlockPlacement():
 func buildWorld():
 	
 	blockX = 0
-	buildFloor()
-	buildTerrain()
-	addBuildings()
-	addDecorations()
-	spawnPlayer()
+	var floorBuilt = 		buildFloor()
+	var terrainBuilt = 		buildTerrain()
+	var buildingsAdded = 	addBuildings()
+	var decorationsAdded = 	addDecorations()
+	var playerSpawned = 	spawnPlayer()
+	
 	
 	#Friendlies are now spawned with buildings
 	
@@ -132,6 +135,17 @@ func buildWorld():
 	if not GLOBAL.klaraModeEnabled:
 		#spawnEnemies()
 		spawnMegaEagle()
+	
+	
+	if floorBuilt and terrainBuilt and buildingsAdded and decorationsAdded and playerSpawned:
+		
+		GLOBAL.clearBlocks = true
+		
+	
+
+
+
+
 
 
 #Just generates the basic floor of the world
@@ -151,6 +165,9 @@ func buildFloor():
 		
 		
 	blockY -= 16
+	
+	
+	return true
 
 #This will generate hills and other things for the terrain
 func buildTerrain():
@@ -162,7 +179,7 @@ func buildTerrain():
 	
 	
 	var chunkSize = int(worldWidth / 16)
-	var terrainHeight = int(rand_range(5,10))
+	var terrainHeight = int(rand_range(7,13))
 	
 	var minTerrainHeight = terrainHeight - 5
 	var maxTerrainHeight = terrainHeight + 5
@@ -191,7 +208,7 @@ func buildTerrain():
 		
 		
 		
-		for row in range(terrainHeight):
+		for row in range(terrainHeight + 3):
 			
 			if not GLOBAL.blockDB.has(Vector2(blockX,blockY)):
 				var block = BLOCK_2_SCENE.instance()
@@ -212,6 +229,9 @@ func buildTerrain():
 	
 	
 	blockY = baseBlockY - 64
+	
+	
+	return true
 
 
 
@@ -278,7 +298,7 @@ func addBuildings():
 				
 			
 			
-
+	return true
 
 
 
@@ -292,6 +312,8 @@ func spawnPlayer():
 	add_child(player)
 	player.global_position = Vector2(spawnPosX,-64)
 	
+	
+	return true
 
 
 func spawnMegaEagle():
@@ -591,22 +613,27 @@ func generateStructure(baseX,baseY):
 	
 	
 	
+	
+	
+	
+	
 	#Generate base of building.
 	for row in range(houseHeight):
 		for column in range(houseWidth):
 			
 			#Left of house
-			if not GLOBAL.blockDB.has(Vector2(buildingBlockX,buildingBlockY)) and  column == 0 and not row == 0:
+			if column == 0 and not row == 0:
 				var block = BLOCK_3_CORNER_SCENE.instance()
-				
+				block.canBeCleared = false
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
 				pass
 			#Right of house
-			elif not GLOBAL.blockDB.has(Vector2(buildingBlockX,buildingBlockY)) and  column == houseWidth - 1 and not row == 0:
+			elif column == houseWidth - 1 and not row == 0:
 				var block = BLOCK_3_CORNER_SCENE.instance()
 				block.flippedH = true
+				block.canBeCleared = false
 				buildingBase.add_child(block)
 				block.global_position = Vector2(buildingBlockX,buildingBlockY)
 				block.addToDB()
@@ -614,8 +641,9 @@ func generateStructure(baseX,baseY):
 			#all the normal blocks
 			else:
 				#Floors
-				if (not GLOBAL.blockDB.has(Vector2(buildingBlockX,buildingBlockY)) and buildingBlockY == lastFloorY - (16 * 4) and floorsPlaced < numberOfFLoors) and not column == 1 and not column == 2:
+				if (buildingBlockY == lastFloorY - (16 * 4) and floorsPlaced < numberOfFLoors) and not column == 1 and not column == 2:
 					var block = BLOCK_3_SCENE.instance()
+					block.canBeCleared = false
 					buildingBase.add_child(block)
 					block.global_position = Vector2(buildingBlockX,buildingBlockY)
 					if column == houseWidth - 2:
@@ -634,12 +662,20 @@ func generateStructure(baseX,baseY):
 			buildingBlockX += 16
 		buildingBlockX = bbBaseX
 		buildingBlockY -= 16 #Block height
+	
+	
+	buildingBase.houseSize = Vector2(houseWidth * 16,houseHeight * 16)
+	print(buildingBase.houseSize)
+	buildingBase.removeBlocks()
+	
+	
 	#Generate roof
 	for column in range(houseWidth):
 		if column == 0:
 			var block = BLOCK_2_CORNER_SCENE.instance()
 			block.blockIsCorner = true
 			block.flippedH = true
+			block.canBeCleared = false
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
 			block.addToDB()
@@ -648,11 +684,13 @@ func generateStructure(baseX,baseY):
 		elif column == houseWidth - 1:
 			var block = BLOCK_2_CORNER_SCENE.instance()
 			block.blockIsCorner = true
+			block.canBeCleared = false
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
 			block.addToDB()
 		else:
 			var block = BLOCK_2_SCENE.instance()
+			block.canBeCleared = false
 			buildingBase.add_child(block)
 			block.global_position = Vector2(buildingBlockX,buildingBlockY)
 			block.addToDB()
@@ -681,3 +719,5 @@ func addDecorations():
 			add_child(decoration)
 			decoration.global_position = Vector2(blockX,blockY - 8)
 	
+	
+	return true

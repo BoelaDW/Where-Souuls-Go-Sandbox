@@ -20,6 +20,11 @@ var playerHP = 100
 var playerPower = 100
 var playerCanMove = 1
 
+
+#Clearing unwanted blocks
+var clearBlocks = false
+
+
 #Toolbar system
 var selectedToolbarTool = 0
 var toolbarSelectedBlock = 0
@@ -169,7 +174,7 @@ func goto_scene(path): # game requests to switch to this scene
 	if not get_children().has(loadingScene):
 		add_child(loadingScene)
 	get_node("/root/GLOBAL/LoadingScene").visible = true
-	wait_frames = 1
+	wait_frames = 30
 
 
 
