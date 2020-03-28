@@ -76,7 +76,11 @@ func _physics_process(delta):
 			
 			if $WallCheckRCLeft.is_colliding() and $WallCheckRCRight.is_colliding():
 				dir = 0
-				print("CAN'T MOVE...")
+				var leftCollider = $WallCheckRCLeft.get_collider()
+				var rightCollider= $WallCheckRCRight.get_collider()
+				
+				
+				$AnimationPlayer.play("Shoot")
 			
 		
 		

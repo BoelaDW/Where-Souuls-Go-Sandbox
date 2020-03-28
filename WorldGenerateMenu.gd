@@ -19,7 +19,7 @@ func _on_Button2_pressed():
 func _on_ButtonRandom_pressed():
 	randomize()
 	GLOBAL.worldGenSeed = rand_range(1,9999)
-	GLOBAL.worldGenSize = int(rand_range(200, 1000))
+	GLOBAL.worldGenSize = int(rand_range(200, 3000))
 	GLOBAL.klaraModeEnabled = $HBoxContainer/VBoxContainer/CBKlaraMode.pressed
 	GLOBAL.blockPlacementDebug = $HBoxContainer/VBoxContainer2/CheckButton.pressed
 	

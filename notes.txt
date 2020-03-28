@@ -29,8 +29,14 @@ Changes made
 		- Houses now look different
 		- Corner blocks have a different collision shape
 		- Friendlies now run home to hide when Eagle is coming
-		
+	
+	Sat 19 Oct:
+		- Reduced the recoil when firing
+		- New boss is in the works *The Bones Trio*
+		- Evil Builders are also new
+	
 Changes to make
 ---------------
 City bells
 City bell warning popup
+

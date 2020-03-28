@@ -1,11 +1,14 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://UI/GUI.gd" type="Script" id=1]
 [ext_resource path="res://Inventory/ToolbarItem-1.png.png" type="Texture" id=2]
-[ext_resource path="res://Inventory/ToolbarItem-7.png.png" type="Texture" id=3]
-[ext_resource path="res://Inventory/ToolbarItem-3.png.png" type="Texture" id=4]
-[ext_resource path="res://Inventory/ToolbarItem-2.png.png" type="Texture" id=5]
-[ext_resource path="res://Objects/Clock.tscn" type="PackedScene" id=6]
+[ext_resource path="res://UI/Empty.png" type="Texture" id=3]
+[ext_resource path="res://Inventory/ToolbarItem-7.png.png" type="Texture" id=4]
+[ext_resource path="res://Inventory/ToolbarItem-3.png.png" type="Texture" id=5]
+[ext_resource path="res://Inventory/ToolbarItem-2.png.png" type="Texture" id=6]
+[ext_resource path="res://Objects/Clock.tscn" type="PackedScene" id=7]
+[ext_resource path="res://UI/GUIArrowButton.png" type="Texture" id=8]
+[ext_resource path="res://UI/GUICloseButton.png" type="Texture" id=9]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.47451, 1, 0.34902, 1 )
@@ -30,7 +33,6 @@ margin_bottom = 360.0
 columns = 2
 
 [node name="VBoxLT" type="VBoxContainer" parent="GridContainer"]
-editor/display_folded = true
 margin_right = 318.0
 margin_bottom = 178.0
 size_flags_horizontal = 3
@@ -82,6 +84,12 @@ margin_right = 24.0
 margin_bottom = 24.0
 texture = ExtResource( 2 )
 
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GridContainer/VBoxLT/HBoxContainer/ToolBarItem1"]
+scale = Vector2( 0.35, 1 )
+normal = ExtResource( 3 )
+action = "\"1\""
+visibility_mode = 1
+
 [node name="ToolBarItem2" type="CenterContainer" parent="GridContainer/VBoxLT/HBoxContainer"]
 margin_left = 36.0
 margin_right = 68.0
@@ -101,7 +109,14 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 24.0
 margin_bottom = 24.0
-texture = ExtResource( 3 )
+texture = ExtResource( 4 )
+
+[node name="TouchScreenButton2" type="TouchScreenButton" parent="GridContainer/VBoxLT/HBoxContainer/ToolBarItem2"]
+position = Vector2( -36, 0 )
+scale = Vector2( 0.35, 1 )
+normal = ExtResource( 3 )
+action = "\"2\""
+visibility_mode = 1
 
 [node name="ToolBarItem3" type="CenterContainer" parent="GridContainer/VBoxLT/HBoxContainer"]
 margin_left = 72.0
@@ -122,7 +137,7 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 24.0
 margin_bottom = 24.0
-texture = ExtResource( 4 )
+texture = ExtResource( 5 )
 
 [node name="ToolBarItem4" type="CenterContainer" parent="GridContainer/VBoxLT/HBoxContainer"]
 margin_left = 108.0
@@ -143,7 +158,7 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 24.0
 margin_bottom = 24.0
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 
 [node name="ToolBarItem5" type="CenterContainer" parent="GridContainer/VBoxLT/HBoxContainer"]
 margin_left = 144.0
@@ -230,6 +245,7 @@ margin_bottom = 24.0
 texture = ExtResource( 2 )
 
 [node name="VBoxRT" type="VBoxContainer" parent="GridContainer"]
+editor/display_folded = true
 margin_left = 322.0
 margin_right = 640.0
 margin_bottom = 178.0
@@ -242,20 +258,79 @@ margin_bottom = 64.0
 alignment = 2
 
 [node name="ProgressBar" type="CenterContainer" parent="GridContainer/VBoxRT/HBoxContainer"]
-margin_left = 254.0
-margin_right = 318.0
+margin_left = 250.0
+margin_right = 314.0
 margin_bottom = 64.0
 rect_min_size = Vector2( 64, 64 )
 
-[node name="Clock" parent="GridContainer/VBoxRT/HBoxContainer/ProgressBar" instance=ExtResource( 6 )]
+[node name="Clock" parent="GridContainer/VBoxRT/HBoxContainer/ProgressBar" instance=ExtResource( 7 )]
 position = Vector2( 32, 32 )
 
+[node name="Control" type="Control" parent="GridContainer/VBoxRT/HBoxContainer"]
+margin_left = 318.0
+margin_right = 318.0
+margin_bottom = 64.0
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GridContainer/VBoxRT/HBoxContainer/Control"]
+
 [node name="VBoxLB" type="VBoxContainer" parent="GridContainer"]
+editor/display_folded = true
 margin_top = 182.0
 margin_right = 318.0
 margin_bottom = 360.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GridContainer/VBoxLB"]
+margin_right = 318.0
+margin_bottom = 178.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="GridContainer/VBoxLB/HBoxContainer"]
+margin_right = 157.0
+margin_bottom = 178.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="GridContainer/VBoxLB/HBoxContainer/CenterContainer"]
+editor/display_folded = true
+margin_left = 78.0
+margin_top = 89.0
+margin_right = 78.0
+margin_bottom = 89.0
+
+[node name="Up" type="TouchScreenButton" parent="GridContainer/VBoxLB/HBoxContainer/CenterContainer/Control"]
+rotation = -1.5708
+normal = ExtResource( 8 )
+action = "ui_up"
+visibility_mode = 1
+
+[node name="Left" type="TouchScreenButton" parent="GridContainer/VBoxLB/HBoxContainer/CenterContainer/Control"]
+position = Vector2( 0, 32 )
+rotation = 3.14159
+normal = ExtResource( 8 )
+action = "ui_left"
+visibility_mode = 1
+
+[node name="Right" type="TouchScreenButton" parent="GridContainer/VBoxLB/HBoxContainer/CenterContainer/Control"]
+position = Vector2( 32, 0 )
+normal = ExtResource( 8 )
+action = "ui_right"
+visibility_mode = 1
+
+[node name="Down" type="TouchScreenButton" parent="GridContainer/VBoxLB/HBoxContainer/CenterContainer/Control"]
+position = Vector2( 32, 32 )
+rotation = 1.5708
+normal = ExtResource( 8 )
+action = "ui_down"
+visibility_mode = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="GridContainer/VBoxLB/HBoxContainer"]
+margin_left = 161.0
+margin_right = 318.0
+margin_bottom = 178.0
+size_flags_horizontal = 3
 
 [node name="VBoxRB" type="VBoxContainer" parent="GridContainer"]
 margin_left = 322.0
@@ -264,6 +339,42 @@ margin_right = 640.0
 margin_bottom = 360.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="CenterContainer" type="CenterContainer" parent="GridContainer/VBoxRB"]
+margin_right = 318.0
+margin_bottom = 178.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GridContainer/VBoxRB/CenterContainer"]
+margin_left = 157.0
+margin_top = 89.0
+margin_right = 161.0
+margin_bottom = 89.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="GridContainer/VBoxRB/CenterContainer/HBoxContainer"]
+size_flags_horizontal = 3
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GridContainer/VBoxRB/CenterContainer/HBoxContainer/Control"]
+position = Vector2( 32, 32 )
+rotation = -1.5708
+normal = ExtResource( 8 )
+action = "ui_select"
+visibility_mode = 1
+
+[node name="Control2" type="Control" parent="GridContainer/VBoxRB/CenterContainer/HBoxContainer"]
+margin_left = 4.0
+margin_right = 4.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="GridContainer/VBoxRB/CenterContainer/HBoxContainer/Control2"]
+position = Vector2( -32, 0 )
+normal = ExtResource( 9 )
+action = "ui_accept"
+visibility_mode = 1
 
 [node name="DeathMenu" type="CenterContainer" parent="."]
 editor/display_folded = true

@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Albert",
+"language": "GDScript",
+"path": "res://NPCs/BonesTrio/Albert.gd"
+}, {
 "base": "StaticBody2D",
 "class": "Block",
 "language": "GDScript",
@@ -30,6 +35,11 @@ _global_script_classes=[ {
 "path": "res://NPCs/BasicEnemy.gd"
 }, {
 "base": "KinematicBody2D",
+"class": "EvilBuilder",
+"language": "GDScript",
+"path": "res://NPCs/EvilBuilder/EvilBuilder.gd"
+}, {
+"base": "KinematicBody2D",
 "class": "EvilMage",
 "language": "GDScript",
 "path": "res://NPCs/EvilMage/EvilMage.gd"
@@ -39,18 +49,32 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://NPCs/Friendly/Friendly.gd"
 }, {
+"base": "Area2D",
+"class": "Ladder",
+"language": "GDScript",
+"path": "res://Blocks/LadderBlock.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "MegaEagle",
+"language": "GDScript",
+"path": "res://MegaEagle.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Player",
 "language": "GDScript",
 "path": "res://Player/Player.gd"
 } ]
 _global_script_class_icons={
+"Albert": "",
 "Block": "",
 "BreakableDoor": "",
 "BuildingDoor": "",
 "Enemy": "",
+"EvilBuilder": "",
 "EvilMage": "",
 "Friendly": "",
+"Ladder": "",
+"MegaEagle": "",
 "Player": ""
 }
 
@@ -69,7 +93,6 @@ GLOBAL="*res://global.gd"
 gdscript/warnings/unassigned_variable=false
 gdscript/warnings/unassigned_variable_op_assign=false
 gdscript/warnings/unused_variable=false
-gdscript/warnings/unused_class_variable=false
 gdscript/warnings/unused_argument=false
 gdscript/warnings/unused_signal=false
 gdscript/warnings/return_value_discarded=false

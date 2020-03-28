@@ -4,9 +4,11 @@ class_name Player
 
 const INTERPOLATE_SPEED = 10
 const WALK_SPEED = 200
-const GRAVITY = 10
 const JUMP_FORCE = -300
 const FLOOR = Vector2(0,-1)
+
+
+var GRAVITY = 10
 
 var velocity = Vector2()
 var dir = -1
@@ -25,6 +27,13 @@ var firePosPos = Vector2()
 var dummyBlockPos = Vector2()
 
 
+
+
+
+
+#Camera shake
+var cameraShakeIntensity = 0
+
 #Coyote Time
 var canJump
 
@@ -37,6 +46,10 @@ func _ready():
 	$PowerRegenTimer.start()
 	add_to_group("Player")
 	$AnimationPlayer.play("Active")
+	GLOBAL.playerPath = get_path()
+	$CollisionShape2D.disabled = false
+	$Body.visible = true
+	$Eyes.visible = true
 	
 
 
@@ -106,7 +119,6 @@ func interactButton():
 		canFire = false
 		$CanFireTimer.start()
 		GLOBAL.playerPower -= 5
-		shakeCamera()
 		
 		if GLOBAL.checkCanMoveRight(global_position.x) and GLOBAL.checkCanMoveLeft(global_position.x):
 			velocity.x += -dir * 100
@@ -228,13 +240,7 @@ func _physics_process(delta):
 		
 	
 	
-	if $Area2D.get_overlapping_bodies() != []:
-		for body in $Area2D.get_overlapping_bodies():
-			if body is Enemy:
-				body.attackPlayer()
-			
-		
-		
+	
 	
 	
 	
@@ -313,8 +319,8 @@ func heal(heal= 5):
 	
 
 var shakeProgress = 0
-func shakeCamera():
-	
+func shakeCamera(intensity = 3):
+	cameraShakeIntensity = intensity
 	$ShakeTimer.start()
 	shakeProgress += 1
 	
@@ -323,7 +329,7 @@ func shakeCamera():
 
 func _on_ShakeTimer_timeout():
 	if shakeProgress < 5 and shakeProgress > 0:
-		$Camera2D.offset = Vector2(randi()%3 * dir,rand_range(-3,3))
+		$Camera2D.offset = Vector2(rand_range(-cameraShakeIntensity,cameraShakeIntensity) * dir,rand_range(-cameraShakeIntensity,cameraShakeIntensity))
 		shakeCamera()
 	else:
 		shakeProgress = 0

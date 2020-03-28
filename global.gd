@@ -1,5 +1,9 @@
 extends Node
 
+
+
+
+
 #----------------------------------------------
 #GLOBAL VARIABLES GO HERE
 var worldGenSeed = 0
@@ -16,9 +20,21 @@ var playerHP = 100
 var playerPower = 100
 var playerCanMove = 1
 
+
+#Clearing unwanted blocks
+var clearBlocks = false
+
+
 #Toolbar system
 var selectedToolbarTool = 0
 var toolbarSelectedBlock = 0
+
+
+var bones = 0
+var blocksToPlace = 0
+
+
+
 
 #Block placement system
 var blockID = 0
@@ -27,7 +43,8 @@ onready var blockDB = []
 #When a friendly gets angry
 var angryPos = Vector2()
 
-
+#Player node path
+var playerPath = ""
 
 #Time system
 var baseRealTime = 0.0
@@ -157,7 +174,7 @@ func goto_scene(path): # game requests to switch to this scene
 	if not get_children().has(loadingScene):
 		add_child(loadingScene)
 	get_node("/root/GLOBAL/LoadingScene").visible = true
-	wait_frames = 1
+	wait_frames = 30
 
 
 
